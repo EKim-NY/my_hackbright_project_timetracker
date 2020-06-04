@@ -43,6 +43,7 @@ def get_workspaces_clients():
 # Execute code 
 response = toggl.request("https://www.toggl.com/api/v8/clients")
 
+# Interact w/API - Sample code
 for client in response:
     print "Client name: %s  Client id: %s" % (client['name'], client['id'])
 
