@@ -1,4 +1,4 @@
-"""Seed database with dummy data."""
+"""Create model objects for database."""
 
 # Use Flask-SQLAlchemy 
 from flask import Flask 
@@ -11,8 +11,8 @@ from datetime import (datetime, datetimeoffset, date)
 db = SQLAlchemy() 
 
 # Create an instance of Flask() 
-app = Flask() 
-app.secret_key = "SECRET"
+flask_app = Flask() 
+flask_app.secret_key = "SECRET"
 
 
 ############## Define database objects here #####################
@@ -30,6 +30,14 @@ class UserDetails(db.Model):
                             db.ForeignKey('projects.project_id'),
                             nullable=False,
                           )
+
+
+    def __repr__(self): 
+        """Print user details info to terminal."""
+
+        return f'<UserDetails user_id={self.user_id}'
+               f'project_id={self.project_id}>'
+
 
 
 class Projects(db.Model): 
@@ -51,6 +59,12 @@ class Projects(db.Model):
     project_end = db.Column(db.Datetime) 
 
 
+    def __repr__(self): 
+        """Print project details to terminal."""
+        return f'<Projects project_id={self.project_id}'
+               f'project_name={self.project_name}>'
+
+
 class Pomodoros(db.Model):
     """Details about each Pomodoro session."""
 
@@ -67,26 +81,41 @@ class Pomodoros(db.Model):
     pomodoro_notes = db.Column(db.Text)
 
 
+    def __repr__(self): 
+        """Print pomodoro details to terminal."""
+        info = (
+                f'<Pomodoros pomodoro_id={self.pomodoro_id}'
+                f' pomodoro_type={pomodoro_type}'
+                f' pomodoro_length={self.pomodoro_length}>'
+               )
 
-################ Define functions here ############################
+        return info
 
-# Connect app with db 
-def connect_to_db(app, db_name): 
+
+################ Connect to database ############################
+
+def connect_to_db(flask_app, db_name, echo=True): 
     """Connect to pSQL database."""
 
     app.config["SQLAlchemy_DATABASE_URI"] = f"postgresql:///{db_name}"
     app.config["SQLAlchemy_ECHO"] = True
     app.config["SQLAlchemy_TRACK_MODIFICATIONS"] = False
 
-    db.app = app 
-    db.init_app(app)
+    db.app = flask_app 
+    db.init_app(flask_app)
+
+    print("Connected to the db!")
 
 
+############### dunder main ################################
 
-############### Call functions here ################################
+if __name__ == '__main__'
+    from server import app
 
-# Call function using tablenames. Replace <__tablename__> later w/actual names.
-connect_to_db(app, "<__tablename__>")
+# Connect db to flask_app 
+connect_to_db(flask_app) 
 
-
+    # Call connect_to_db(app, echo=False) if your program output gets
+    # too annoying; this will tell SQLAlchemy not to print out every
+    # query it executes.
 
