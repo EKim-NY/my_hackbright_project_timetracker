@@ -17,10 +17,10 @@ flask_app.secret_key = "SECRET"
 
 ############## Define database objects here #####################
 
-class UserDetails(db.Model): 
+class User(db.Model): 
     """User details."""
 
-    __tablename__ = "user_details"
+    __tablename__ = "users"
 
     user_id = db.Column(db.Integer,
                         primary_key=True, 
@@ -35,12 +35,15 @@ class UserDetails(db.Model):
     def __repr__(self): 
         """Print user details info to terminal."""
 
-        return f'<UserDetails user_id={self.user_id}'
-               f'project_id={self.project_id}>'
+        # Get project_name for projects.project_id and put in f-str? 
+
+        return f'<User: user_id={self.user_id}'
+               f'projects.project_name={self.project_id}>'
+               # Is this ^ how we retrieve project.name from another table? 
 
 
 
-class Projects(db.Model): 
+class Project(db.Model): 
     """Details about projects; a project is a sequence of Pomodoro sessions."""
 
     __tablename__ = "projects"
@@ -65,7 +68,7 @@ class Projects(db.Model):
                f'project_name={self.project_name}>'
 
 
-class Pomodoros(db.Model):
+class Pomodoro(db.Model):
     """Details about each Pomodoro session."""
 
     __tablename__ = "pomodoros"
