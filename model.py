@@ -1,18 +1,11 @@
 """Create model objects for database."""
 
-# Use Flask-SQLAlchemy 
-from flask import Flask 
 from flask_sqlalchemy import SQLAlchemy
-
-# Import datetime, date, time classes from Python module datetime
 from datetime import (datetime, datetimeoffset, date)
 
 # Create an instance of SQLAlchemy() 
 db = SQLAlchemy() 
 
-# Create an instance of Flask() 
-flask_app = Flask() 
-flask_app.secret_key = "SECRET"
 
 
 ############## Define database objects here #####################
@@ -26,10 +19,13 @@ class User(db.Model):
                         primary_key=True, 
                         autoincrement=True,
                         )
-    project_id - db.Column(db.Integer, 
+    project_id = db.Column(db.Integer, 
                             db.ForeignKey('projects.project_id'),
                             nullable=False,
                           )
+    user_name = db.Column(db.String, nullable=False, unique=True)
+    user_email = db.Column(db.String, nullable=False, unique=True)
+    user_password = db.Column(db.String, nullable=False, unique=True)
 
 
     def __repr__(self): 
@@ -37,8 +33,7 @@ class User(db.Model):
 
         # Get project_name for projects.project_id and put in f-str? 
 
-        return f'<User: user_id={self.user_id}'
-               f'projects.project_name={self.project_id}>'
+        return f'<User: user_id={self.user_id} projects.project_name={self.project_id}>'
                # Is this ^ how we retrieve project.name from another table? 
 
 
@@ -64,8 +59,7 @@ class Project(db.Model):
 
     def __repr__(self): 
         """Print project details to terminal."""
-        return f'<Projects project_id={self.project_id}'
-               f'project_name={self.project_name}>'
+        return f'<Projects project_id={self.project_id} project_name={self.project_name}>'
 
 
 class Pomodoro(db.Model):
@@ -87,9 +81,7 @@ class Pomodoro(db.Model):
     def __repr__(self): 
         """Print pomodoro details to terminal."""
         info = (
-                f'<Pomodoros pomodoro_id={self.pomodoro_id}'
-                f' pomodoro_type={pomodoro_type}'
-                f' pomodoro_length={self.pomodoro_length}>'
+                f'<Pomodoros pomodoro_id={self.pomodoro_id} pomodoro_type={pomodoro_type} pomodoro_length={self.pomodoro_length}>'
                )
 
         return info
@@ -109,16 +101,45 @@ def connect_to_db(flask_app, db_name, echo=True):
 
     print("Connected to the db!")
 
+################# Create other db queries here. ############ 
+
+# Create dummy data in db 
+def dummy_data(): 
+    """Create some sample data."""
+
+    # For testing purposes, use this snippet. 
+    # Remove/comment out this snippet for production code. 
+    Project.query.delete() 
+    User.query.delete()
+    Pomodoro.query.delete()
+
+    # Add sample users. 
+    MM = User(user_id=1)
+    DD = User(user_id=2)
+
+    # Add sample projects. 
+    exam = Project(project_name='Exam Prep', project_type='study', project_notes='group study sesison', project_rate=0.0)
+    code = Project(project_name='Code Around The World', project_type='work', project_notes='Send bill to Donald Duck', project_rate=20.25)
+
+
+
 
 ############### dunder main ################################
 
-if __name__ == '__main__'
-    from server import app
+if __name__ == '__main__': 
 
-# Connect db to flask_app 
-connect_to_db(flask_app) 
+    # We want to use Flask-SQLAlchemy so import Flask 
+    from flask import Flask 
+
+    app = Flask(__name__)
+
+    connect_to_db(app, echo=False) 
+    print("Flask-SQLAlchemy is now connected to db.")
 
     # Call connect_to_db(app, echo=False) if your program output gets
     # too annoying; this will tell SQLAlchemy not to print out every
     # query it executes.
 
+    # Create db w/dummy data. 
+    db.create_all()
+    dummy_data()
