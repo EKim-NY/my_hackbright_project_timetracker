@@ -73,9 +73,11 @@ class Pomodoro(db.Model):
                             )
     pomodoro_type = db.Column(db.String, nullable=False, unique=False)
     pomodoro_length = db.Column(db.Integer, nullable=False, unique=False)
+    pomodoro_notes = db.Column(db.Text)
+    pomodoro_date = db.Column(db.String)
+    # Need to add these fields to sample_pomodoros.json 
     pomodoro_start = db.Column(db.Datetime)
     pomodoro_end = db.Column(db.Datetime) 
-    pomodoro_notes = db.Column(db.Text)
 
 
     def __repr__(self): 
@@ -100,28 +102,6 @@ def connect_to_db(flask_app, db_name, echo=True):
     db.init_app(flask_app)
 
     print("Connected to the db!")
-
-################# Create other db queries here. ############ 
-
-# Create dummy data in db 
-def dummy_data(): 
-    """Create some sample data."""
-
-    # For testing purposes, use this snippet. 
-    # Remove/comment out this snippet for production code. 
-    Project.query.delete() 
-    User.query.delete()
-    Pomodoro.query.delete()
-
-    # Add sample users. 
-    MM = User(user_id=1)
-    DD = User(user_id=2)
-
-    # Add sample projects. 
-    exam = Project(project_name='Exam Prep', project_type='study', project_notes='group study sesison', project_rate=0.0)
-    code = Project(project_name='Code Around The World', project_type='work', project_notes='Send bill to Donald Duck', project_rate=20.25)
-
-
 
 
 ############### dunder main ################################

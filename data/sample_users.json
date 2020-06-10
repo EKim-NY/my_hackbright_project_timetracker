@@ -1,0 +1,21 @@
+"""Sample users for seeding db."""
+
+[
+    {
+        "user_name": "Mickey Mouse",
+        "user_email": "mickey@disneyworld.com", 
+        "password": "mouse"
+    }, 
+
+    {
+        "user_name": "Donald Duck", 
+        "user_email": "donald@disneyworld.com", 
+        "password": "duck"
+    },
+
+    {
+        "user_name": "Minnie Mouse", 
+        "user_email": "minnie@disneyworld.com", 
+        "password": "actress"
+    }
+]
