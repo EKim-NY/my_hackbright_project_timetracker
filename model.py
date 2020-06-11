@@ -1,7 +1,7 @@
 """Create model objects for database."""
 
 from flask_sqlalchemy import SQLAlchemy
-from datetime import (datetime, datetimeoffset, date)
+from datetime import (datetime, time, date)
 
 # Create an instance of SQLAlchemy() 
 db = SQLAlchemy() 

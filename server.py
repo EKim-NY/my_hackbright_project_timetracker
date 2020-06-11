@@ -1,7 +1,8 @@
 """Server for TimeTracker app."""
 
-from flask import (Flask, render_template, request, flash, session, redirect)
+from flask import Flask, render_template, request, flash, session, redirect
 from model import connect_to_db
+import crud
 
 # Make jinja2 throw errors for undefined vars
 from jinja2 import StrictUndefined 
@@ -26,7 +27,6 @@ def homepage():
 def login():
     """View login page."""
 
-    # Save user's email, password in new User t
     return render_template('login.html')
 
 
@@ -46,20 +46,20 @@ def select_session():
 
 
 
-@app.route('/create_session')
+# @app.route('/create_session')
 
 
-@app.route('/repeat_session')
+# @app.route('/repeat_session')
 
 
-@app.route('/resume_session')
+# @app.route('/resume_session')
 
 
-@app.route('/pause_session')
+# @app.route('/pause_session')
 
 
-@app.route('/session_complete')
+# @app.route('/session_complete')
 
 
-@app.route('/logout')
+# @app.route('/logout')
 
