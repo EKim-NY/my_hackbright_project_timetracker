@@ -17,16 +17,9 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def homepage(): 
-    """View homepage."""
+    """View homepage; user will be redirected to either the login or new account page."""
 
-    user_account = # get user reply from DOM 
-
-    if user_account == 'new_account'
-        # redirect to new_account page
-    else if user_account == 'login'
-        # redirect to login pg 
-
-
+    return render_template('homepage.html')
 
 
 @app.route('/login')
