@@ -1,7 +1,7 @@
 """Server for TimeTracker app."""
 
 from flask import Flask, render_template, request, flash, session, redirect
-from model import connect_to_db
+from model import db 
 import crud
 
 # Make jinja2 throw errors for undefined vars

@@ -1,7 +1,8 @@
 """Create model objects for database."""
 
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import (datetime, time, date)
+from datetime import datetime, time, date
 
 # Create an instance of SQLAlchemy() 
 db = SQLAlchemy() 
@@ -52,9 +53,11 @@ class Project(db.Model):
     project_notes = db.Column(db.Text, unique=False,)
     project_rate = db.Column(db.Float, unique=False,)
 
-    # Check w/Kat if this field is ok; is DateTime an object in psql? CHECK
-    project_start = db.Column(db.Datetime)
-    project_end = db.Column(db.Datetime) 
+    # Check w/Kat if this field is ok
+    # AttributeError: SQLAlchemy obj. has no 'Datetime' attribute
+    # Further research needed; DateTime was used in one of the labs/HWs? 
+    project_start = db.Column(db.String)
+    project_end = db.Column(db.String) 
 
 
     def __repr__(self): 
@@ -76,8 +79,8 @@ class Pomodoro(db.Model):
     pomodoro_notes = db.Column(db.Text)
     pomodoro_date = db.Column(db.String)
     # Need to add these fields to sample_pomodoros.json 
-    pomodoro_start = db.Column(db.Datetime)
-    pomodoro_end = db.Column(db.Datetime) 
+    pomodoro_start = db.Column(db.String)
+    pomodoro_end = db.Column(db.String) 
 
 
     def __repr__(self): 
@@ -91,35 +94,40 @@ class Pomodoro(db.Model):
 
 ################ Connect to database ############################
 
-def connect_to_db(flask_app, db_name, echo=True): 
+def connect_to_db(flask_app, echo=False): 
     """Connect to pSQL database."""
 
-    app.config["SQLAlchemy_DATABASE_URI"] = f"postgresql:///{db_name}"
-    app.config["SQLAlchemy_ECHO"] = True
-    app.config["SQLAlchemy_TRACK_MODIFICATIONS"] = False
+    # Had to hardcode timetracker in lieu of {db_name} 
+    # b/c db_name wasn't defined and timetracker wasn't defined error msgs
+    flask_app.config["SQLAlchemy_DATABASE_URI"] = f"postgresql:///timetracker"
+    flask_app.config["SQLAlchemy_ECHO"] = False
+    flask_app.config["SQLAlchemy_TRACK_MODIFICATIONS"] = False
 
     db.app = flask_app 
     db.init_app(flask_app)
 
     print("Connected to the db!")
+    
 
 
 ############### dunder main ################################
 
 if __name__ == '__main__': 
 
-    # We want to use Flask-SQLAlchemy so import Flask 
-    from flask import Flask 
+  
+    from server import app 
+    # Don't place this at the top of model.py => weird error! 
+    # You do not want to import app into every file => 
+    # it can cause looping errors! 
+    # Only import app when needed from server; 
+    # since app was created in server.py 
 
-    app = Flask(__name__)
-
-    connect_to_db(app, echo=False) 
-    print("Flask-SQLAlchemy is now connected to db.")
+    
+    connect_to_db(app, echo=False)
 
     # Call connect_to_db(app, echo=False) if your program output gets
     # too annoying; this will tell SQLAlchemy not to print out every
     # query it executes.
 
-    # Create db w/dummy data. 
-    db.create_all()
-    dummy_data()
+
+
