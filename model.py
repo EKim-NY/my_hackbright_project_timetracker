@@ -88,7 +88,7 @@ class Pomodoro(db.Model):
     def __repr__(self): 
         """Print pomodoro details to terminal."""
         info = (
-                f'<Pomodoros pomodoro_id={self.pomodoro_id} pomodoro_type={pomodoro_type} pomodoro_length={self.pomodoro_length}>'
+                f'<Pomodoros pomodoro_id={self.pomodoro_id} pomodoro_type={self.pomodoro_type} pomodoro_length={self.pomodoro_length}>'
                )
 
         return info
@@ -96,20 +96,31 @@ class Pomodoro(db.Model):
 
 ################ Connect to database ############################
 
-def connect_to_db(flask_app, echo=True): 
-    """Connect to pSQL database."""
+# def connect_to_db(flask_app, echo=True): 
+#     """Connect to pSQL database."""
 
-    # Had to hardcode timetracker in lieu of {db_name} 
-    # b/c db_name wasn't defined and timetracker wasn't defined error msgs
-    flask_app.config["SQLAlchemy_DATABASE_URI"] = f"postgresql:///timetracker"
-    flask_app.config["SQLAlchemy_ECHO"] = True
-    flask_app.config["SQLAlchemy_TRACK_MODIFICATIONS"] = True
+#     # Had to hardcode timetracker in lieu of {db_name} 
+#     # b/c db_name wasn't defined and timetracker wasn't defined error msgs
+#     flask_app.config["SQLAlchemy_DATABASE_URI"] = f"postgresql:///timetracker"
+#     flask_app.config["SQLAlchemy_ECHO"] = True
+#     flask_app.config["SQLAlchemy_TRACK_MODIFICATIONS"] = True
 
-    db.app = flask_app 
+#     db.app = flask_app 
+#     db.init_app(flask_app)
+
+#     print("Connected to the db!")
+    
+def connect_to_db(flask_app, db_uri='postgresql:///timetracker', echo=True):
+    
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.app = flask_app
     db.init_app(flask_app)
 
-    print("Connected to the db!")
-    
+    print('Connected to the db!')
+
 
 
 ############### dunder main ################################

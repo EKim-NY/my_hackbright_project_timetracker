@@ -42,7 +42,7 @@ for user in user_data:
     users_in_db.append(user_record)
 
     # Debugging
-    print("User in db:", users_in_db[0])
+    # print("User in db:", users_in_db[0])
 
 
 
@@ -64,7 +64,7 @@ for project in project_data:
     projects_in_db.append(project_record)
 
     # Debugging
-    print("Project in db:", projects_in_db[0])
+    # print("Project in db:", projects_in_db[0])
 
 ############ Populate pomodoros table with dummy data ##############
 with open('data/sample_pomodoros.json') as file: 
@@ -76,6 +76,7 @@ for pomo in pomo_data:
     # Why do I keep getting a "pomo_type is not defined" error whenever I split 
     # pomo_type and the rest of the line into two separate lines? 
     # I couldn't get my multiline f-string earlier to work either. 
+    # I'm getting a "pomodoro_type" is not defined error although this file ran w/o issues earlier. 
     pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end = (pomo['pomodoro_type'],
                                                                            pomo['pomodoro_length'],
                                                                            pomo['pomodoro_notes'], 
@@ -89,14 +90,14 @@ for pomo in pomo_data:
     pomo_record = crud.create_pomodoro(pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end)
 
     # Debugging 
-    print("pomo_record:", pomo_record)
+    # print("pomo_record:", pomo_record)
 
     pomos_in_db.append(pomo_record)
 
     # Debugging
-    print("Pomo in db:", pomos_in_db[0])
+    # print("Pomo in db:", pomos_in_db[0])
 
 ######################################################################
-print("Good news: No more syntax errors.")
-print("Bad news: Is the db seeding?")
+# print("Good news: No more syntax errors.")
+# print("Bad news: Is the db seeding?")
 
