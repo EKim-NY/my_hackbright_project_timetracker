@@ -34,9 +34,11 @@ class User(db.Model):
 
         # Get project_name for projects.project_id and put in f-str? 
 
-        return f'<User: user_id={self.user_id} projects.project_name={self.project_id}>'
+        return f'<User: user_id={self.user_id}>'
                # Is this ^ how we retrieve project.name from another table? 
 
+               # f'<User: user_id={self.user_id} projects.project_name={self.project_id}>'
+               # project_id 
 
 
 class Project(db.Model): 
@@ -94,14 +96,14 @@ class Pomodoro(db.Model):
 
 ################ Connect to database ############################
 
-def connect_to_db(flask_app, echo=False): 
+def connect_to_db(flask_app, echo=True): 
     """Connect to pSQL database."""
 
     # Had to hardcode timetracker in lieu of {db_name} 
     # b/c db_name wasn't defined and timetracker wasn't defined error msgs
     flask_app.config["SQLAlchemy_DATABASE_URI"] = f"postgresql:///timetracker"
-    flask_app.config["SQLAlchemy_ECHO"] = False
-    flask_app.config["SQLAlchemy_TRACK_MODIFICATIONS"] = False
+    flask_app.config["SQLAlchemy_ECHO"] = True
+    flask_app.config["SQLAlchemy_TRACK_MODIFICATIONS"] = True
 
     db.app = flask_app 
     db.init_app(flask_app)

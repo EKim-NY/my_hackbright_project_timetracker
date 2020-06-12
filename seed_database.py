@@ -41,6 +41,9 @@ for user in user_data:
     # Append record to the list of users in the db 
     users_in_db.append(user_record)
 
+    # Debugging
+    print("User in db:", users_in_db[0])
+
 
 
 ############ Populate projects table with dummy data ###############
@@ -60,6 +63,8 @@ for project in project_data:
 
     projects_in_db.append(project_record)
 
+    # Debugging
+    print("Project in db:", projects_in_db[0])
 
 ############ Populate pomodoros table with dummy data ##############
 with open('data/sample_pomodoros.json') as file: 
@@ -83,7 +88,15 @@ for pomo in pomo_data:
 
     pomo_record = crud.create_pomodoro(pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end)
 
+    # Debugging 
+    print("pomo_record:", pomo_record)
+
     pomos_in_db.append(pomo_record)
 
+    # Debugging
+    print("Pomo in db:", pomos_in_db[0])
+
 ######################################################################
-print("Congrats! Your database has now been seeded with dummy data.")
+print("Good news: No more syntax errors.")
+print("Bad news: Is the db seeding?")
+
