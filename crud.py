@@ -32,15 +32,18 @@ def create_project(p_name, p_type, p_notes, p_rate):
     return project 
 
 
-def create_pomodoro(pomo_type, pomo_length, pomo_notes, pomo_date): 
+def create_pomodoro(pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end): 
     """Create a pomodoro session in the db."""
 
     pomodoro = Pomodoro(pomodoro_type = pomo_type, 
                         pomodoro_length = pomo_length, 
                         pomodoro_notes  = pomo_notes, 
-                        pomodoro_date = pomo_date
+                        pomodoro_date = pomo_date,
+                        pomodoro_start = pomo_start, 
+                        pomodoro_end = pomo_end
                         )
 
+    
     db.session.add(pomodoro)
     db.session.commit()
 

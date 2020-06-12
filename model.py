@@ -20,10 +20,10 @@ class User(db.Model):
                         primary_key=True, 
                         autoincrement=True,
                         )
-    project_id = db.Column(db.Integer, 
-                            db.ForeignKey('projects.project_id'),
-                            nullable=False,
-                          )
+    # project_id = db.Column(db.Integer, 
+    #                         db.ForeignKey('projects.project_id'),
+    #                         nullable=False,
+    #                       )
     user_name = db.Column(db.String, nullable=False, unique=True)
     user_email = db.Column(db.String, nullable=False, unique=True)
     user_password = db.Column(db.String, nullable=False, unique=True)
