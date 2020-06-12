@@ -114,6 +114,9 @@ def connect_to_db(flask_app, echo=False):
 
 if __name__ == '__main__': 
 
+    # When user runs model in Terminal, app gets imported from server.py
+    # app is passed as an arg called flask_app into connect_to_db f(x)
+    # When seed_database is run, 
   
     from server import app 
     # Don't place this at the top of model.py => weird error! 

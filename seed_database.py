@@ -5,7 +5,7 @@ import json
 import crud 
 import model 
 import server  
-from datetime import datetime 
+from datetime import datetime, timedelta 
 
 
 # Call Flask to drop/create timetracker db so you don't have to do it by hand. 
@@ -19,8 +19,10 @@ model.db.create_all()
 ########## Populate users table with dummy data ###############
 # Open JSON file, read it, and load it for future manipulation
 with open('data/sample_users.json') as file: 
-    user_data = json.load(file)
-    # user_data = json.loads(file.read())
+    # print(file)
+    # print('*******')
+    # import pdb; pdb.set_trace()
+    user_data = json.loads(file.read())  
 
 
 # List to contain all users' data for the table
@@ -34,7 +36,7 @@ for user in user_data:
                                             )
 
     # Create a record for each user in the users table
-    user_record = crud.create_user(user_name, user_email, password)
+    user_record = crud.create_user(user_name, user_email, user_password)
 
     # Append record to the list of users in the db 
     users_in_db.append(user_record)

@@ -3,12 +3,12 @@
 from model import db, User, Project, Pomodoro, connect_to_db
 
 
-def create_user(user_name, user_email, password):
+def create_user(user_name, user_email, user_password):
     """Create a user in the db."""
     
     user = User(user_name = user_name, 
                 user_email = user_email, 
-                user_password = password
+                user_password = user_password
                 )
 
     db.session.add(user)
