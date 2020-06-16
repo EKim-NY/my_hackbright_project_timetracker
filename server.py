@@ -42,18 +42,18 @@ def new_account():
 
 
 
-# @app.route('/projects')
-# def projects(): 
-#     """Allow user to specify project details."""
+@app.route('/projects')
+def projects(): 
+    """Allow user to specify project details."""
 
-#     return render_template('projects.html')
+    return render_template('projects.html')
 
 
-# @app.route('/session_details')
-# def session_details(): 
-#     """Allow user to select a new or existing Pomodoro session."""
+@app.route('/session')
+def session(): 
+    """Allow user to select a new or existing Pomodoro session."""
 
-#     return render_template('session_details.html')
+    return render_template('session.html')
 
 
 # @app.route('/pause_session')
