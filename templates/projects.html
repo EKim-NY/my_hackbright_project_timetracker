@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}PROJECT{% endblock %}
+
+{% block body %}
+  <!-- CONTAINER FOR ENTIRE CONTENT -->
+  <div class="container" id="project_container"> 
+    <!-- FORM --> 
+    <form class="forms" id="project_form">
+      <label>Select project details.</label>
+      <br>
+      <input type="text" id="project_name"><br>
+      <select class="project_option" id="project_type">
+        <option value="work">Work</option>
+        <option value="break">Break</option>
+        <option value="custom">Custom</option>
+      </select><br>
+      <input type="text" id="project_rate"><br>
+        <!-- Display previous specified rates here -->
+      <input type="submit" value="Submit">
+    </form>
+    <div class="session_log">
+      <!-- Display session blocks representing chunks of time and session types in different colors along with centered text-->
+    </div>
+  </div> <!-- session_container -->
+  
+{% endblock %}
