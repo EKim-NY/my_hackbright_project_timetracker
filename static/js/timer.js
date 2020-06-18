@@ -46,7 +46,7 @@ playButton.addEventListener('click', () => {
     //    Decrement actual timer 
     //    When it hits zero, stop function
     //      Log date and time of end session in SQL 
-})
+});
 
     // For selected session, set timer to prefixed value and start timer
     // Save session details in SQL => do this in Flask? 
@@ -63,7 +63,8 @@ function callTimer(sessionDuration) {
     DateAndTime(); 
     timeInSession = sessionDuration; 
     // setInterval(f(x), y [millisec]) 
-    // executes f(x) per sec during total duration y  
+    // executes f(x) per sec during total duration y 
+    // Test: setInterval() works!  
     setInterval(() => {
         timeInSession--; // decrements per 1 s
         // display time in DOM 
@@ -74,7 +75,9 @@ function callTimer(sessionDuration) {
     }, sessionDuration); // end of setInterval() 
 }; // end of callTimer() 
 
-    
+
+
+// Test: It works in Chrome! 
 function DateAndTime() {
     // get current time 
     // convert JS format to SQL format 
@@ -95,9 +98,14 @@ function DateAndTime() {
         displayTimer(timeVars); 
     } // end of if 
 
-} // end of DateAndTime() 
+}; // end of DateAndTime() 
 
 
+
+// Test: It works! (even for edge case of 00 minutes)
+// // > timeVars = [6, 1, 2020, 20, 00]; 
+// > displayTimer(timeVars); 
+// DOM: 8:00 PM
 function displayTimer(timeVars) {
     Date(epochTime); // convert epochTime to a human-friendly datetime str
     //'Wed Jun 17 2020 00:00:51 GMT+0000 (Coordinated Universal Time)'
@@ -107,12 +115,26 @@ function displayTimer(timeVars) {
     // return timeList = [hour, minutes, AM/PM]
 
     // display time in browser 
-    timer.textContent = 
-        `${convertedTime[0]}':' ${convertedTime[1] ${convertedTime[2]}`;
-        
+    // --- NOTES ---------------
+    // JS cares about whitespace
+    // If `string` is placed on a separate line, 
+    // then timer.textContent = Null 
+    if (convertedTime[1] >= 0 && convertedTime[1] < 10){
+        // EDGE CASE: Display minutes less than 10 as 00 to 09 in browser
+        let displayMinutes = '0' + convertedTime[1]; 
+        timer.textContent =`${convertedTime[0]}:${displayMinutes} ${convertedTime[2]}`;
+    } else {
+    timer.textContent =`${convertedTime[0]}:${convertedTime[1]} ${convertedTime[2]}`;
+    }
 }; 
 
 
+
+
+// test: it works! 
+// > let timeVars = [6, 1, 2020, 18, 30];
+// > convertDate(timeVars); 
+// (3) ["July", 1, 2020]
 const convertDate = ((timeVars) => {
     // return human-readable time; make month human-friendly
     // timeVars = [month, dayOfMonth, year, startHour, startMinute]
@@ -136,14 +158,20 @@ const convertDate = ((timeVars) => {
  }); // end of convertDate() 
 
 
+
+
+// test: it works! 
+// > let timeVars = [6, 1, 2020, 18, 30];
+// > convertMilitaryTime (timeVars)
+// (3) [6, 30, "PM"]
 function convertMilitaryTime (timeVars) {
     // convert hours from 24-hr to 12-hr clock 
     // timeVars = [month, dayOfMonth, year, startHour, startMinute]
-    militaryHour = timeVars[3]; 
+    let militaryHour = timeVars[3]; 
     if (militaryHour == 0 || militaryHour == 24) {
         hour = 12; 
         timeOfDay = 'AM'; 
-    } else if militaryHour == 12 {
+    } else if (militaryHour == 12) {
         hour = 12; 
         timeOfDay = 'PM'; 
     } else if (militaryHour > 0 && militaryHour < 12) {
