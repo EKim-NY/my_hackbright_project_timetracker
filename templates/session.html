@@ -13,16 +13,18 @@
         <input type="checkbox" id="Custom">
           <br><br>
         <label>Session type:</label>
-        <select id="session_type_dropdown">
-          <option value="work" class="session_type">Work</option>
-          <option value="short_break" class="session_type">Short Break</option>
-          <option value="long_break" class="session_type">Long Break</option>
+        <select id="session_type">
+          <option value="none">-- SELECT --</option>
+          <option value="work">Work</option>
+          <option value="short_break">Short Break</option>
+          <option value="long_break">Long Break</option>
         </select><br><br>
         <input type="submit" value="Submit">
       </form>
         <br><br>
+        <!-- display timer --> 
       <span class="timer">
-        <p class="timer" id="timerTxt"></p>
+        <p class="timer" id="timerTxt">DISPLAY TIME</p> 
       </span>
         <!-- PLAY, PAUSE, RESUME, STOP BUTTONS -->
       <span class="icons">

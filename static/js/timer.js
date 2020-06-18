@@ -1,7 +1,3 @@
-const pauseButton = document.querySelector('#pomodoro-pause'); 
-const playButton = document.querySelector('#pomodoro-play'); 
-const stopButton = document.querySelector('#pomodoro-stop'); 
-
 let workSession = 25 * 3600 * 1000; // 25 min in milliseconds
 let shortBreakSession = 5 * 3600 * 1000; // 5 min in ms 
 let longBreakSession = 15 * 3600 * 1000; // 15 min in ms 
@@ -27,13 +23,12 @@ let hour; // int; 12-hr clock
 let timeOfDay; // str
 let militaryHour // int; 24-hr clock 
 
-let timer = document.querySelector('.timerTxt'); // display timer 
+let timer = document.getElementById("timerTxt"); // display timer 
 
-// DOM dropdown value 
-const sessionTypeOption = document.querySelector('.session_type'); 
 
-playButton.addEventListener('click', () => {
-    playBool = true; 
+let play = document.getElementById("pomodoro-play"); // select Play button 
+
+play.addEventListener('click', () => {
 
     // PSEUDOCODE
     // If session is 'Work': 
@@ -46,25 +41,41 @@ playButton.addEventListener('click', () => {
     //    Decrement actual timer 
     //    When it hits zero, stop function
     //      Log date and time of end session in SQL 
-});
 
+    playBool = true; // user clicked Play button 
     // For selected session, set timer to prefixed value and start timer
     // Save session details in SQL => do this in Flask? 
-    if (sessionTypeOption.value == "work") {
+    
+    // DOM dropdown value 
+    // const sessionTypeOption = document.querySelector('.session_type'); 
+
+    let dropdown = document.getElementById("session_type"); 
+    // Select DOM node containing all dropdown options 
+    let session = dropdown.options[dropdown.selectedIndex].value; 
+    // From the dropdown options, return the value (ie, displayed text) 
+    // of the selected option (identify by index of dropdown option)
+    // Note: Dropdown option indices start with 0 (just like for an array)
+
+    if (session == 'Work') {
         callTimer(workSession); 
-    } else if (sessionTypeOption.value == "short_break"){
+    } else if (session == "Short Break"){
         callTimer(shortBreakSession);
-    } else if (sessionTypeOption.value == "long_break"){
+    } else if (session == "Long Break"){
         callTimer(longBreakSession); 
     }
 
+
+}); 
+
+// Test: no discernible syntax errors 
 function callTimer(sessionDuration) {
     startBool = true; // Timer on  
     DateAndTime(); 
-    timeInSession = sessionDuration; 
+    let timeInSession = sessionDuration; 
+    
     // setInterval(f(x), y [millisec]) 
     // executes f(x) per sec during total duration y 
-    // Test: setInterval() works!  
+    // Unit Test: setInterval() works!  
     setInterval(() => {
         timeInSession--; // decrements per 1 s
         // display time in DOM 
@@ -73,6 +84,7 @@ function callTimer(sessionDuration) {
             startBool = false; // turn timer off 
         } // end of if 
     }, sessionDuration); // end of setInterval() 
+
 }; // end of callTimer() 
 
 
@@ -100,7 +112,31 @@ function DateAndTime() {
 
 }; // end of DateAndTime() 
 
+// Test: it works! 
+// > let timeVars = [6, 1, 2020, 18, 30];
+// > convertDate(timeVars); 
+// (3) ["July", 1, 2020]
+function convertDate(timeVars) {
+    // return human-readable time; make month human-friendly
+    // timeVars = [month, dayOfMonth, year, startHour, startMinute]
 
+    let months = ['January', 
+                  'February', 
+                  'March', 
+                  'April', 
+                  'May', 
+                  'June', 
+                  'July', 
+                  'August', 
+                  'September', 
+                  'October', 
+                  'November', 
+                  'December']; 
+
+    month = months[timeVars[0]]; 
+    // return [month, day, year]
+    return dateList = [month, timeVars[1], timeVars[2]]; 
+ }; // end of convertDate() 
 
 // Test: It works! (even for edge case of 00 minutes)
 // // > timeVars = [6, 1, 2020, 20, 00]; 
@@ -122,45 +158,21 @@ function displayTimer(timeVars) {
     if (convertedTime[1] >= 0 && convertedTime[1] < 10){
         // EDGE CASE: Display minutes less than 10 as 00 to 09 in browser
         let displayMinutes = '0' + convertedTime[1]; 
-        timer.textContent =`${convertedTime[0]}:${displayMinutes} ${convertedTime[2]}`;
+        timer.innerText =`${convertedTime[0]}:${displayMinutes} ${convertedTime[2]}`;
     } else {
-    timer.textContent =`${convertedTime[0]}:${convertedTime[1]} ${convertedTime[2]}`;
+    timer.innerText =`${convertedTime[0]}:${convertedTime[1]} ${convertedTime[2]}`;
     }
 }; 
 
 
 
 
-// test: it works! 
-// > let timeVars = [6, 1, 2020, 18, 30];
-// > convertDate(timeVars); 
-// (3) ["July", 1, 2020]
-const convertDate = ((timeVars) => {
-    // return human-readable time; make month human-friendly
-    // timeVars = [month, dayOfMonth, year, startHour, startMinute]
-
-    let months = ['January', 
-                  'February', 
-                  'March', 
-                  'April', 
-                  'May', 
-                  'June', 
-                  'July', 
-                  'August', 
-                  'September', 
-                  'October', 
-                  'November', 
-                  'December']; 
-
-    month = months[timeVars[0]]; 
-    // return [month, day, year]
-    return dateList = [month, timeVars[1], timeVars[2]]; 
- }); // end of convertDate() 
 
 
 
 
-// test: it works! 
+
+// Test: it works! 
 // > let timeVars = [6, 1, 2020, 18, 30];
 // > convertMilitaryTime (timeVars)
 // (3) [6, 30, "PM"]
