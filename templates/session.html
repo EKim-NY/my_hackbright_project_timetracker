@@ -14,7 +14,6 @@
           <br><br>
         <label>Session type:</label>
         <select id="session_type">
-          <option value="none">-- SELECT --</option>
           <option value="work">Work</option>
           <option value="short_break">Short Break</option>
           <option value="long_break">Long Break</option>
@@ -23,8 +22,9 @@
       </form>
         <br><br>
         <!-- display timer --> 
-      <span class="timer">
-        <p class="timer" id="timerTxt">DISPLAY TIME</p> 
+      <span class="time">
+        <p class="time" id="clockTime">CLOCK</p> 
+        <p class="time" id="timerTime">TIMER</p> 
       </span>
         <!-- PLAY, PAUSE, RESUME, STOP BUTTONS -->
       <span class="icons">
@@ -50,4 +50,5 @@
 
 {% block after_body %}
   <span class="footer_container">HISTORY ABOUT HOMEPAGE LOGOUT</span>
+ 
 {% endblock %}
