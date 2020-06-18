@@ -1,8 +1,9 @@
-let workSession = 25 * 60 * 1000; // 25 min in milliseconds
-let shortBreakSession = 5 * 60 * 1000; // 5 min in ms 
-let longBreakSession = 15 * 60 * 1000; // 15 min in ms 
+let workSession = 25 * 60; // 25 min in seconds
+let shortBreakSession = 5 * 60; // 5 min in seconds 
+let longBreakSession = 15 * 60; // 15 min in seconds 
 
 let timeInSession; // assign it a value later
+let sessionDuration; // chronological length of session 
 
 // Initial values for timer stuff
 let playBool = false; 
@@ -25,7 +26,7 @@ let hour; // int; 12-hr clock
 let timeOfDay; // str
 let militaryHour // int; 24-hr clock 
 
-let timer = document.getElementById("timerTxt"); // display timer 
+let timer = document.getElementById("timerTxt"); // display timer
 
 
 let play = document.getElementById("pomodoro-play"); // select Play button 
@@ -69,26 +70,58 @@ play.addEventListener('click', () => {
 
 }); 
 
-// Test: no discernible syntax errors 
+
+
+// Test: no discernible syntax errors but callTimer() doesn't work properly. 
 function callTimer(sessionDuration) {
     startBool = true; // Timer on  
     DateAndTime(); 
-    let timeInSession = sessionDuration; 
-    
-    // setInterval(f(x), y [millisec]) 
-    // executes f(x) per sec during total duration y 
-    // Unit Test: setInterval() works!  
-    setInterval(() => {
-        timeInSession--; // decrements per 1 s
-        // display time in DOM 
-        if (timeInSession == 0 && startBool == true) {
-            console.log('ENDED'); // setInterval doesn't display either alert or console.log() 
-            alert('Session ended!'); 
-            startBool = false; // turn timer off 
-        } // end of if 
-    }, sessionDuration); // end of setInterval() 
 
-}; // end of callTimer() 
+    let sessionCountdown = setInterval(decrementTimer(sessionDuration), 1000); 
+    // setInterval(f(x), time-interval) executes f(x) every time-interval 
+    // EX: setInterval(myTimer, 1000) executes myTimer every 1000 milliseconds
+
+//     // Unit Test: setInterval() works!  
+//     setInterval(() => {
+//         timeInSession--; // decrements per 1 s
+//         // display time in DOM 
+//         if (timeInSession == 0 && startBool == true) {
+//             alert('Session ended!'); 
+//             startBool = false; // turn timer off 
+//         } // end of if 
+//     }, sessionDuration); // end of setInterval() 
+
+    }; // end of callTimer() 
+//----------------------------------------------------
+
+function decrementTimer(sessionDuration) {
+    // Execute this code block per time-interval b/n each execution 
+    let timeInSession = sessionDuration; 
+    timeInSession--; 
+    if (timeInSession == 0 && startBool == true) {
+        console.log('ENDED'); // setInterval doesn't display either alert or console.log() 
+        alert('Session ended!'); 
+        startBool = false; // turn timer off 
+    } // end of if 
+} // end of decrementTimer()
+
+
+// this snippet works in Repl.it but not sure about timer.innerText 
+  let timeInSession = 10; 
+  let show = setInterval(() => {
+    // Get new time every second before displaying it in browser. 
+    let today = new Date(); 
+    // let time = today.toLocaleTimeString();
+    // console.log(time)
+    timer.innerText = today.toLocaleTimeString(); 
+    if (timeInSession == 0) {
+        clearInterval(show); 
+    }
+  }, 1000);
+
+// setInterval executes function() every 1000 ms or 1 s 
+// setInterval will continue executing unless clearInterval stops it
+//------------------------------------------------------------
 
 
 
@@ -112,7 +145,11 @@ function DateAndTime() {
         month = today.getMonth(); // 0 is January
         year = today.getUTCFullYear(); 
         let timeVars = [month, dayOfMonth, year, startHour, startMinute]; 
-        displayTimer(timeVars); 
+
+        let date = today.toLocaleDateString(); // '2:23:26 AM'
+        let time = today.toLocaleTimeString(); // '6/18/2020'
+        let dateTimeList = [date, time]; 
+        displayTimer(timeVars, dateTimeList); 
     }; // end of if 
 
 }; // end of DateAndTime() 
@@ -147,8 +184,8 @@ function convertDate(timeVars) {
 // // > timeVars = [6, 1, 2020, 20, 0]; 
 // > displayTimer(timeVars); 
 // DOM: 8:00 PM
-function displayTimer(timeVars) {
-    Date(epochTime); // convert epochTime to a human-friendly datetime str
+function displayTimer(timeVars, dateTimeList) {
+    // Date(epochTime); // convert epochTime to a human-friendly datetime str
     //'Wed Jun 17 2020 00:00:51 GMT+0000 (Coordinated Universal Time)'
     convertDate(timeVars); 
     // return dateList = [month, day, year]
@@ -160,13 +197,17 @@ function displayTimer(timeVars) {
     // JS cares about whitespace
     // If `string` is placed on a separate line, 
     // then timer.textContent = Null 
-    if (convertedTime[1] >= 0 && convertedTime[1] < 10){
-        // EDGE CASE: Display minutes less than 10 as 00 to 09 in browser
-        let displayMinutes = '0' + convertedTime[1]; 
-        timer.innerText =`${convertedTime[0]}:${displayMinutes} ${convertedTime[2]}`;
-    } else {
-    timer.innerText =`${convertedTime[0]}:${convertedTime[1]} ${convertedTime[2]}`;
-    }
+
+    // if (convertedTime[1] >= 0 && convertedTime[1] < 10){
+    //     // EDGE CASE: Display minutes less than 10 as 00 to 09 in browser
+    //     let displayMinutes = '0' + convertedTime[1]; 
+    //     timer.innerText =`${convertedTime[0]}:${displayMinutes} ${convertedTime[2]}`;
+    // } else {
+    // timer.innerText =`${convertedTime[0]}:${convertedTime[1]} ${convertedTime[2]}`;
+    // }
+
+    // Alternate option: Discovered these methods after I'd already coded the above stuff! 
+    timer.innerText = dateTimeList[1]; // display local time 
 }; 
 
 
