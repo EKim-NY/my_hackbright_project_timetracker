@@ -1,6 +1,6 @@
-let workSession = 25 * 3600 * 1000; // 25 min in milliseconds
-let shortBreakSession = 5 * 3600 * 1000; // 5 min in ms 
-let longBreakSession = 15 * 3600 * 1000; // 15 min in ms 
+let workSession = 25 * 60 * 1000; // 25 min in milliseconds
+let shortBreakSession = 5 * 60 * 1000; // 5 min in ms 
+let longBreakSession = 15 * 60 * 1000; // 15 min in ms 
 
 let timeInSession; // assign it a value later
 
@@ -14,11 +14,13 @@ let getTime; //  int; total millisec since epoch time aka 1/1/1970
 // use timestamp to calculate how much time passed 
 // -> convert to human-readable form later before displaying it to user
 // add timezone 
+let epochTime; // int; total milliseconds since epoch (ie, 1/1/1970) 
+// Note: difference of epochTimes taken on the same day at different times is zero 
+//       BUT converting the epochTime into a date/time show different times
 let startHour; // int; get hour in military time 
 let startMinute; // int
 let day; // int; 0 is Sunday  
 let month; // int; 0 is January 
-
 let hour; // int; 12-hr clock 
 let timeOfDay; // str
 let militaryHour // int; 24-hr clock 
@@ -80,6 +82,7 @@ function callTimer(sessionDuration) {
         timeInSession--; // decrements per 1 s
         // display time in DOM 
         if (timeInSession == 0 && startBool == true) {
+            console.log('ENDED'); // setInterval doesn't display either alert or console.log() 
             alert('Session ended!'); 
             startBool = false; // turn timer off 
         } // end of if 
@@ -89,7 +92,7 @@ function callTimer(sessionDuration) {
 
 
 
-// Test: It works! 
+// Test: It works! (independently of prior f(x)'s)
 // > DateAndTime(); 
 // 10:10 PM   => browser displays actual current time but only when f(x) is called
 function DateAndTime() {
