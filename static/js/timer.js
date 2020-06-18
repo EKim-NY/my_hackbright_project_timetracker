@@ -89,7 +89,9 @@ function callTimer(sessionDuration) {
 
 
 
-// Test: It works in Chrome! 
+// Test: It works! 
+// > DateAndTime(); 
+// 10:10 PM   => browser displays actual current time but only when f(x) is called
 function DateAndTime() {
     // get current time 
     // convert JS format to SQL format 
@@ -108,14 +110,14 @@ function DateAndTime() {
         year = today.getUTCFullYear(); 
         let timeVars = [month, dayOfMonth, year, startHour, startMinute]; 
         displayTimer(timeVars); 
-    } // end of if 
+    }; // end of if 
 
 }; // end of DateAndTime() 
 
-// Test: it works! 
-// > let timeVars = [6, 1, 2020, 18, 30];
+// Test: It works! 
+// > timeVars = [6, 1, 2020, 20, 0]; 
 // > convertDate(timeVars); 
-// (3) ["July", 1, 2020]
+// (3) ["June", 1, 2020]
 function convertDate(timeVars) {
     // return human-readable time; make month human-friendly
     // timeVars = [month, dayOfMonth, year, startHour, startMinute]
@@ -133,13 +135,13 @@ function convertDate(timeVars) {
                   'November', 
                   'December']; 
 
-    month = months[timeVars[0]]; 
+    month = months[(timeVars[0] -1)]; // Tested! Returns correct month 
     // return [month, day, year]
     return dateList = [month, timeVars[1], timeVars[2]]; 
  }; // end of convertDate() 
 
 // Test: It works! (even for edge case of 00 minutes)
-// // > timeVars = [6, 1, 2020, 20, 00]; 
+// // > timeVars = [6, 1, 2020, 20, 0]; 
 // > displayTimer(timeVars); 
 // DOM: 8:00 PM
 function displayTimer(timeVars) {
@@ -163,13 +165,6 @@ function displayTimer(timeVars) {
     timer.innerText =`${convertedTime[0]}:${convertedTime[1]} ${convertedTime[2]}`;
     }
 }; 
-
-
-
-
-
-
-
 
 
 // Test: it works! 
