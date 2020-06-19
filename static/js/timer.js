@@ -1,5 +1,7 @@
 "use strict"; 
 
+alert('timer.js has loaded'); 
+
 let workSession = 25 * 60; // 25 min in seconds
 let shortBreakSession = 5 * 60; // 5 min in seconds 
 let longBreakSession = 15 * 60; // 15 min in seconds 
@@ -33,46 +35,6 @@ let stop = document.getElementById("pomodoro-stop");
 let session; 
 let dropdown; 
 
-// Event Listeners 
-play.addEventListener('click', () => {
-    console.log('Click Play'); 
-    startSession = true; 
-    // Check if new session 
-    if (pauseSession == false && stopSession == false) { 
-        console.log('if-then: pause=false, stop=false'); 
-        // Select DOM node containing all dropdown options 
-        // Dropdown option indices start with 0 (just like for an array)
-        dropdown = document.getElementById("session_type");
-        session = dropdown.options[dropdown.selectedIndex].value; 
-        getSelectedSession(session); 
-    } else if (pauseSession == true && stopSession == false) {
-        console.log('else-if')
-        // resume timer 
-    }
-}); 
-
-
-pause.addEventListener('click', (session) => {
-    
-    startSession = true; 
-    pauseSession = true; 
-    stopSession = false; 
-
-    // stop timer
-    // don't record session 
-
-}); 
-
-stop.addEventListener('click', (session) => {
-    startSession = true; 
-    pauseSession = false; 
-    stopSession = false; 
-
-    // stop timer
-    // send session details to SQL 
-}); 
-
-
 let startTime; 
 let stopTime; 
 let today; 
@@ -81,6 +43,57 @@ let totalSeconds;
 let totalMinutes; 
 let totalHours; 
 
+let timeForResumingSession;
+let timeAsList; 
+
+
+
+// Event Listeners 
+play.addEventListener('click', () => {
+    console.log('Click Play'); 
+    // Check if new session 
+    if (startSession == false && pauseSession == false && stopSession == false) { 
+        console.log('start new session'); 
+        // Select DOM node containing all dropdown options 
+        // Dropdown option indices start with 0 (just like for an array)
+        startSession = true; 
+        dropdown = document.getElementById("session_type");
+        session = dropdown.options[dropdown.selectedIndex].value; 
+        getSelectedSession(session); 
+
+    // Resume current session
+    } else if (startSession == true && pauseSession == true && stopSession == false) {
+        console.log('resume session');
+        pauseSession = false; 
+    } else {
+        alert('Please close prior session first starting or resuming a session.'); 
+    }
+}); 
+
+
+pause.addEventListener('click', (session) => {
+    if (startSession == true && pauseSession == false && stopSession == false) {
+        console.log('pause session');
+        pauseSession = true; 
+    } else {
+        alert('A session must be playing before it can be paused.'); 
+    }
+}); 
+
+
+stop.addEventListener('click', (session) => {
+    if (startSession == true && pauseSession == false && stopSession == false) {
+        console.log('stop session');
+        stopSession = true; 
+    } else if (startSession == true && pauseSession == true && stopSession == false){
+        console.log('cancel paused session'); 
+        alert('Current session will not be saved.'); 
+        stopSession = true; 
+    }
+}); 
+
+
+
 function getSelectedSession (session) {
     console.log('getSelectedSession');
     console.log(session);
@@ -88,70 +101,110 @@ function getSelectedSession (session) {
         console.log('if: Work');
         callTimer(workSession); 
     } else if (session == "short_break"){
-        console.log('if:Short break');
+        console.log('if: Short break');
         callTimer(shortBreakSession);
     } else if (session == "long_break"){
-         console.log('if:Long Break');
+        console.log('if: Long Break');
         callTimer(longBreakSession); 
     } 
 }; 
 
-
-
-
-
-// Check if these values can be passed into SQL. 
-
-let timeForResumingSession;
-
-// Test: no discernible syntax errors but callTimer() doesn't work properly. 
-function callTimer(sessionDuration) {  
-    console.log('callTimer started'); 
+function showTimer(sessionDuration) {  
+    console.log('showTimer started'); 
     // setInterval(f(x), time-interval) executes f(x) every time-interval 
     // EX: setInterval(myTimer, 1000) executes myTimer every 1000 milliseconds
 
     // this snippet works in Repl.it but not sure about timer.innerText 
-    let timeInSession = sessionDuration; 
+    timeLeftInSession = sessionDuration; 
+
+    if (timeLeftInSession == 0) { 
+        // If END OF SESSION
+        // Show end of timer countdown. 
+        // Save session details in SQL. 
+        stopSession = true; 
+        clearInterval(show); 
+        console.log('Session has ended'); 
+
+    } else if (startSession == true && pauseSession == true && stopSession == false) {
+        // If SESSION PAUSED
+        // Show paused timer in browser. 
+
+        timeForResumingSession = timeLeftInSession; 
+        clearInterval(show);
+        console.log('Session has paused'); 
+
+    } else if (startSession == true && pauseSession == false && stopSession == false) {
+        // If SESSION STARTED
+        // Show start of timer countdown. 
+
+
+    } else if (startSession == true && pauseSession == true && stopSession == false) {
+        // If RESUME SESSION
+        // Continue timer countdown. 
+
+
+    } else if (startSession == true && pauseSession == false && stopSession == true) {
+        // TOP SESSION FOR GOOD
+        // Don't send session details to SQL. 
+        // Future work: Ask user if user wants to save/cancel session. 
+        // End timer countdown. 
+        // Set timer to 0:00:00. 
+        stopTime = new Date(); 
+    }; // end of if 
+
+}; // end of f(x) 
+
+
+
+
+
+
+
+
+function showClock(sessionDuration) {
+// showClock starts when user starts session. 
+// showClock ends when: 
+//   timer countdown ends naturally
+//   user pauses session
+//   user stops session
+
+// code to display clock when user hits PLAY 
+    timeLeftInSession = sessionDuration;
     // Replaced startTime = Date.now() with startTime = new Date()
     startTime = new Date(); 
-    console.log('start timer'); 
+    console.log('Start clock'); 
+    // Clock will continue showing until countdown ends. 
     let show = setInterval(() => {
-        // For every second that passes, show clock and timer countdown. 
-        // Display clock time. 
-        let today = new Date(); 
-        clock.innerText = today.toLocaleTimeString(); 
-        timeInSession--; 
-        if (timeInSession == 0) { 
-            stopTime = new Date(); 
-            stopSession = true; 
-            clearInterval(show); 
-        } else if (pauseSession == true && startSession == true) {
-            timeForResumingSession = timeInSession; 
-            clearInterval(show);
-            console.log('Paused'); 
-        } else if (pauseSession == false && startSession == true) {
-        // Continue displaying timer if countdown hasn't ended. 
-
-            tiff = stopTime - startTime; 
-            let sec = tiff/1000; 
-            let min = tiff/60; 
-            let hr = tiff/60;
-            // Snippet below leads to errors for totalHours:  
-            // > totalMinutes=Math.round(totalSeconds/60); 
-            // 93  
-            // > totalHours=Math.round(totalMinutes/60); 
-            // 1547
-            totalSeconds = Math.round(sec); 
-            totalMinutes = Math.round(min);
-            totalHours= Number.parseFloat(hr).toFixed(2);
-            timer.innerText = `Timer: ${totalHours} hrs ${totalMinutes} min ${totalSeconds} sec`; 
-        }; 
-
-    }, 1000); // end of setInterval()
-};
+        if (timeLeftInSession == 0) {
+                clearInterval(show); 
+        } else {
+            let today = new Date(); 
+            clock.innerText = today.toLocaleTimeString(); 
+            timeLeftInSession--; 
+        } // end of if-else 
+    }, 1000); // end of show = setInterval()
+} // end of f(X)
 
 
 
+
+// Unit Test: It works! 
+function convertTimeToMillis(timeAsList) {
+    // return total millis 
+    let millis = 0;
+    if (timeAsList[0]!=0) {
+        // if hrs, convert to millis
+        millis = millis + (timeAsList[0] * 3600 * 1000); 
+    } else if (timeAsList[1]!=0) {
+        // if min, convert to millis
+        millis = millis + (timeAsList[1] * 60 * 1000); 
+    } else if (timeAsList[2]!=0) {
+        // if sec, convert to millis 
+        millis = millis + (timeAsList[2] * 1000); 
+    } // end of if 
+
+    return millis; 
+} // end of f(x) 
 
 
 // setInterval(f(x), 1000) executes function() every 1000 ms or 1 s 
