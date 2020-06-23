@@ -54,8 +54,7 @@ let timeForResumingSession;
 let timeAsList; 
 
 
-showClock(); 
-showDate(); 
+
 
 // Event Listeners 
 play.addEventListener('click', () => {
@@ -88,7 +87,7 @@ function showTimer(sessionDuration) {
     timeVarList = convert_timeLeftInSession(timeLeftInSession); 
 
     // Setinterval(showTimer(timeLeftInSession), 1000) 
-    let showTimerCountdown (() => {
+    let showTimerCountdown = setInterval (() => {
 
         if (timeLeftInSession == 0) { 
             // Session has ended naturally.
@@ -133,9 +132,9 @@ function showTimer(sessionDuration) {
         timeLeftInSession--; // decrement with every passing second
         // return new timeVarList for each passing second -> to display timer 
         timeVarList = convert_timeLeftInSession(timeLeftInSession); 
-    }, 1000)}; // end of showTimerCountdown()
-}; // end of f(x) 
-
+    }, 1000); // end of showTimerCountdown()
+ 
+} // end of f(x)
 
 
 function convert_timeLeftInSession(timeLeftInSession) {
@@ -304,3 +303,7 @@ function convertMilitaryTime (timeVars) {
     return timeList = [hour, timeVars[1], timeVars[2], timeOfDay]; 
 }; // end of convertMilitaryTime() 
 
+
+// Call functions here
+showClock(); 
+showDate(); 
