@@ -14,7 +14,8 @@ let sessionDuration; // session length [s]
 let startHour; // int; get hour in military time 
 let startMinute; // int
 let day; // int; 0 is Sunday  
-let month; // int; 0 is January 
+let month; // 'June'
+let month_index; // int; 0 is January 
 let hour; // int; 12-hr clock 
 let timeOfDay; // str
 let militaryHour // int; 24-hr clock 
@@ -23,7 +24,7 @@ let dateVars;
 let timeVars; 
 let dateToday; 
 let time; 
-let dateTimeList; 
+
 
 let timer = document.getElementById("timerTime");
 let clock = document.getElementById("clockTime"); 
@@ -45,58 +46,40 @@ let startTime;
 let stopTime; 
 let today; 
 let tiff; 
-let totalSeconds; 
-let totalMinutes; 
-let totalHours; 
+let seconds; 
+let minutes; 
+let hours; 
 
 let timeForResumingSession;
 let timeAsList; 
 
 
 
+showClock(); 
+showDate(); 
+
 // Event Listeners 
 play.addEventListener('click', () => {
-    console.log('Click Play'); 
-    // Check if new session 
-    if (startSession == false && pauseSession == false && stopSession == false) { 
-        console.log('start new session'); 
-        // Select DOM node containing all dropdown options 
-        // Dropdown option indices start with 0 (just like for an array)
-        startSession = true; 
-        dropdown = document.getElementById("session_type");
-        session = dropdown.options[dropdown.selectedIndex].value; 
-        getSelectedSession(session); 
+    console.log('Click Play or Resume'); 
 
-    // Resume current session
-    } else if (startSession == true && pauseSession == true && stopSession == false) {
-        console.log('resume session');
-        pauseSession = false; 
-    } else {
-        alert('Please close prior session first starting or resuming a session.'); 
-    }
-}); 
-
+    startSession = true; 
+    dropdown = document.getElementById("session_type");
+    session = dropdown.options[dropdown.selectedIndex].value; 
+    getSelectedSession(session); 
+    showTimer(sessionDuration); // start timer countdown
 
 pause.addEventListener('click', (session) => {
-    if (startSession == true && pauseSession == false && stopSession == false) {
-        console.log('pause session');
-        pauseSession = true; 
-    } else {
-        alert('A session must be playing before it can be paused.'); 
-    }
-}); 
+    console.log('Click Pause'); 
 
+    pauseSession = true; 
+    showTimer(sessionDuration); 
 
 stop.addEventListener('click', (session) => {
-    if (startSession == true && pauseSession == false && stopSession == false) {
-        console.log('stop session');
-        stopSession = true; 
-    } else if (startSession == true && pauseSession == true && stopSession == false){
-        console.log('cancel paused session'); 
-        alert('Current session will not be saved.'); 
-        stopSession = true; 
-    }
-}); 
+    console.log('Click Stop'); 
+
+    stopSession = true; 
+    showTimer(sessionDuration); 
+
 
 
 
@@ -113,40 +96,22 @@ function getSelectedSession (session) {
         console.log('if: Long Break');
         callTimer(longBreakSession); 
     } 
-}; 
+} 
 
 
 
+function showClock() {
+// showClock starts when page is loaded
 
-
-
-
-
-
-function showClock(sessionDuration) {
-// showClock starts when user starts session. 
-// showClock ends when: 
-//   timer countdown ends naturally
-//   user pauses session
-//   user stops session
-
-// code to display clock when user hits PLAY 
-    timeLeftInSession = sessionDuration;
     // Replaced startTime = Date.now() with startTime = new Date()
     startTime = new Date(); 
-    console.log('Start clock'); 
-    // Clock will continue showing until countdown ends. 
-    let show = setInterval(() => {
-        if (timeLeftInSession == 0) {
-                clearInterval(show); 
-        } else {
-            let today = new Date(); 
-            clock.innerText = today.toLocaleTimeString(); 
-            timeLeftInSession--; 
-        } // end of if-else 
+    let showClockTime = setInterval(() => {
+        let today = new Date(); 
+        clock.innerText = today.toLocaleTimeString(); 
+        timeLeftInSession--; 
     }, 1000); // end of show = setInterval()
-} // end of f(X)
 
+} // end of f(X)
 
 
 
@@ -170,9 +135,6 @@ function convertTimeToMillis(timeAsList) {
 
 
 
-
-
-
 function showDate() {
     // Display current date in browser. 
 
@@ -182,12 +144,14 @@ function showDate() {
 };
 
 
+
 function getDateInfo() {
     // Get date info as separate vars for data manipulation.
 
     dayOfMonth = today.getDate(); // day of month from 0-31 
     weekday = today.getDay(); // 0 is Sunday  
-    month = today.getMonth(); // 0 is January
+    month_index = today.getMonth(); // 0 is January
+    month = convertMonth_returnDate(month_index); // return month's name 
     year = today.getUTCFullYear(); 
     dateVars = [month, dayOfMonth, year, weekday]; 
 
@@ -199,7 +163,7 @@ function getDateInfo() {
 // > timeVars = [6, 1, 2020, 20, 0]; 
 // > convertDate(timeVars); 
 // (3) ["June", 1, 2020]
-function convertMonth_returnDate(dateVars) {
+function convertMonth_returnDate(month_index) {
     // return human-readable time; make month human-friendly
     // timeVars = [month, dayOfMonth, year, startHour, startMinute]
 
@@ -216,10 +180,10 @@ function convertMonth_returnDate(dateVars) {
                   'November', 
                   'December']; 
 
-    month = months[(dateVars[0] -1)]; // Tested! Returns correct month 
-    // return [month, day, year]
-    return dateList = [month, dateVars[1], dateVars[2], dateVars[3]]; 
- }; // end of f(x) 
+    month = months[month_index]; // Tested! Returns correct month 
+    // return month as a string
+    return month;   
+ }
 
 
 

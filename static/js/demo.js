@@ -1,100 +1,84 @@
-alert ('demo.js has loaded'); 
 
-
-
-let startTime; 
-let stopTime; 
-let today; 
-let tiff; 
-let totalSeconds; 
-let totalMinutes; 
-let totalHours; 
-
-let workSession = 25 * 60; // 25 min in seconds
-let shortBreakSession = 5 * 60; // 5 min in seconds 
-let longBreakSession = 15 * 60; // 15 min in seconds 
-
-let timeInSession; // assign it a value later
-let sessionDuration; // chronological length of session 
-
-// add timezone 
-
-let startHour; // int; get hour in military time 
-let startMinute; // int
-let day; // int; 0 is Sunday  
-let month; // int; 0 is January 
-let hour; // int; 12-hr clock 
-let timeOfDay; // str
-let militaryHour // int; 24-hr clock 
-
-let timer = document.getElementById("timerTime");
-let clock = document.getElementById("clockTime"); 
-let todayDate = document.getElementById("todayDate");
-
-let startSession = true; 
-let pauseSession = false; 
-let stopSession = false; 
-
-// Select DOM elements. 
-let play = document.getElementById("pomodoro-play"); 
-let pause = document.getElementById("pomodoro-pause"); 
-let stop = document.getElementById("pomodoro-stop"); 
-
-let session; 
-let dropdown; 
-
-let timeForResumingSession;
-let timeLeftInSession; 
-
-
-
+let timeVarList; // [hours, minutes, seconds]
 
 
 function showTimer(sessionDuration) {  
-    console.log('showTimer started'); 
+    // show timer countdown when user selects event 
+    console.log('showTimer started session', sessionDuration); 
+    timeLeftInSession = sessionDuration/1000; // total milliseconds of session
 
-    timeLeftInSession = sessionDuration; 
+    timeVarList = convert_timeLeftInSession(timeLeftInSession); 
 
-    if (timeLeftInSession == 0) { 
-        // If END OF SESSION
-        // Show end of timer countdown.
-        console.log('END OF SESSION'); 
+    // Setinterval(showTimer(timeLeftInSession), 1000) 
+    let showTimerCountdown (() => {
 
-        displayTimerTxt(totalHours, totalMinutes, totalSeconds); 
-        stopSession = true; 
-        clearInterval(show); 
+        if (timeLeftInSession == 0) { 
+            // Session has ended naturally. 
+            displayTimerTxt(timeVarList); 
+            stopSession = true; 
+            clearInterval(show); 
 
-        // Save session details in SQL. 
+            console.log('END SESSION'); 
+            // Save session details in SQL. 
 
-    } else if (startSession == true && pauseSession == true && stopSession == false) {
-        // If SESSION PAUSED
-        // Show paused timer in browser. 
+        } else if (startSession == true && pauseSession == true && stopSession == false) {
+            // If SESSION PAUSED
+            // Show paused timer in browser. 
 
-        timeForResumingSession = timeLeftInSession; 
-        clearInterval(show);
-        displayTimerTxt(totalHours, totalMinutes, totalSeconds);         
-        console.log('Session has paused'); 
+            displayTimerTxt(timeVarList); 
+            clearInterval(show); 
+            timeForResumingSession = timeLeftInSession; // track how much of the session time is left 
+            console.log('Session has paused'); 
 
-    } else if (startSession == true && pauseSession == false && stopSession == false) {
-        // If SESSION STARTED
-        // Show start of timer countdown. 
+        } else if (startSession == true && pauseSession == false && stopSession == false) {
+            // If NEW SESSION STARTED
+            // Show timer countdown. 
+            displayTimerTxt(timeVarList); 
+            console.log('New Session'); 
+
+        } else if (startSession == true && pauseSession == true && stopSession == false) {
+            // If RESUME SESSION
+            // Continue timer countdown. 
+            timeLeftInSession = timeForResumingSession; 
+            displayTimerTxt(timeVarList); 
+            console.log('Resume Session'); 
+
+        } else if (startSession == true && pauseSession == false && stopSession == true) {
+            // STOP SESSION before timer reaches 0:00:00.
+            // Don't send session details to SQL. 
+            // End timer countdown. 
+            // Set timer to 0:00:00. 
+            displayTimerTxt(timeVarList); 
+            stopTime = new Date(); // save to SQL 
+            console.log('Stop session'); 
+        }; // end of if 
+
+        timeLeftInSession--; // decrement with every passing second
+        // return new timeVarList for each passing second -> to display timer 
+        timeVarList = convert_timeLeftInSession(timeLeftInSession); 
 
 
-    } else if (startSession == true && pauseSession == true && stopSession == false) {
-        // If RESUME SESSION
-        // Continue timer countdown. 
-
-
-    } else if (startSession == true && pauseSession == false && stopSession == true) {
-        // TOP SESSION FOR GOOD
-        // Don't send session details to SQL. 
-        // Future work: Ask user if user wants to save/cancel session. 
-        // End timer countdown. 
-        // Set timer to 0:00:00. 
-        stopTime = new Date(); 
-    }; // end of if 
+    }, 1000); // end of showTimerCountdown()
 
 }; // end of f(x) 
+
+function convert_timeLeftInSession(timeLeftInSession) {
+    // Return timeLeftInSession [ms] as hours, minutes, seconds in list form.
+
+    if (timeLeftInSession != 0){
+        let convert_Millis_to_Total_Seconds = timeLeftInSession/1000; 
+        hours = timeLeftInSession % 3600
+
+
+    } else {
+        timeVarList = [0, 0, 0]; 
+    }
+
+
+
+
+    return timeVarList = [hours, minutes, seconds]; 
+}
 
 
 
@@ -102,14 +86,10 @@ function getHrMinSec () {
     // Convert current time into totalHours, totalMinutes, totalSeconds.
 
     timeAsList = []; 
-    // Find time now. Fetch value for timeNow [ms].      
-    tiff = timeNow - startTime; 
-    console.log('Time difference: ', tiff); 
-
+    let timeNow = Date.now(); 
+    // Find time now [ms].       
     // Convert milliseconds given to hr, min, sec. 
-    let sec = tiff/1000; 
-    console.log(sec); 
-    console.log(typeof sec); 
+    let sec = timeNow/1000; 
     let min = tiff/60; 
     let hr = tiff/60;
 
@@ -134,17 +114,11 @@ function getHrMinSec () {
 
 } // end of f(x) 
 
-let timeNow = function () {
-    // Fetch current time in milliseconds. 
-    let currentTimeInMillis = new Date()
-
-    return currentTimeInMillis; 
-}
 
 
-function displayTimerTxt (totalHours, totalMinutes, totalSeconds) {
+function displayTimerTxt (timeAsList) {
     // Display timer info in browser. 
-    timer.innerText = `Timer: ${totalHours} hrs ${totalMinutes} min ${totalSeconds} sec`;
+    timer.innerText = `Timer: ${timeAsList[0]} hrs ${timeAsList[1]} min ${timeAsList[2]} sec`;
 } // end of f(x) 
 
 
