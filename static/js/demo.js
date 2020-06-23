@@ -4,8 +4,8 @@ let timeVarList; // [hours, minutes, seconds]
 
 function showTimer(sessionDuration) {  
     // show timer countdown when user selects event 
-    console.log('showTimer started session', sessionDuration); 
-    timeLeftInSession = sessionDuration/1000; // total milliseconds of session
+    timeLeftInSession = Math.round(sessionDuration/1000); // convert millisec to sec 
+    console.log('showTimer started session', timeLeftInSession); 
 
     timeVarList = convert_timeLeftInSession(timeLeftInSession); 
 
@@ -13,7 +13,7 @@ function showTimer(sessionDuration) {
     let showTimerCountdown (() => {
 
         if (timeLeftInSession == 0) { 
-            // Session has ended naturally. 
+            // Session has ended naturally.
             displayTimerTxt(timeVarList); 
             stopSession = true; 
             clearInterval(show); 
@@ -24,7 +24,6 @@ function showTimer(sessionDuration) {
         } else if (startSession == true && pauseSession == true && stopSession == false) {
             // If SESSION PAUSED
             // Show paused timer in browser. 
-
             displayTimerTxt(timeVarList); 
             clearInterval(show); 
             timeForResumingSession = timeLeftInSession; // track how much of the session time is left 
@@ -56,61 +55,38 @@ function showTimer(sessionDuration) {
         timeLeftInSession--; // decrement with every passing second
         // return new timeVarList for each passing second -> to display timer 
         timeVarList = convert_timeLeftInSession(timeLeftInSession); 
-
-
     }, 1000); // end of showTimerCountdown()
-
 }; // end of f(x) 
+
+
 
 function convert_timeLeftInSession(timeLeftInSession) {
     // Return timeLeftInSession [ms] as hours, minutes, seconds in list form.
 
     if (timeLeftInSession != 0){
-        let convert_Millis_to_Total_Seconds = timeLeftInSession/1000; 
-        hours = timeLeftInSession % 3600
+        let timeAsList = []; 
+        // let today = new Date(); 
+        // let timeNow = today.getTime(); 
+        let tiff = timeNow - startTime; // total milliseconds
 
+        // Convert milliseconds given to hr, min, sec. 
+        let sec = tiff/1000; // convert all milliseconds to seconds 
+        let min = sec/60; // convert all to minutes 
+        let hr = min/60; // covert all to hours 
 
-    } else {
-        timeVarList = [0, 0, 0]; 
+        let rsec = Math.round(sec % 60); // remaining sec
+        let rmin = Math.round(min % 60); // remaining min 
+        let rhour = Math.round(hr % 60); // hours only 
+
+        console.log('Hr remaining', rhour); 
+        console.log('Min remaining', rmin); 
+        console.log('Sec remaining', rsec); 
+
+    } else if (timeLeftInSession == 0) {
+        timeAsList = [0, 0, 0]; 
     }
 
-
-
-
-    return timeVarList = [hours, minutes, seconds]; 
-}
-
-
-
-function getHrMinSec () {
-    // Convert current time into totalHours, totalMinutes, totalSeconds.
-
-    timeAsList = []; 
-    let timeNow = Date.now(); 
-    // Find time now [ms].       
-    // Convert milliseconds given to hr, min, sec. 
-    let sec = timeNow/1000; 
-    let min = tiff/60; 
-    let hr = tiff/60;
-
-    // Snippet below leads to errors for totalHours:  
-    // > totalMinutes=Math.round(totalSeconds/60); 
-    // 93  
-    // > totalHours=Math.round(totalMinutes/60); 
-    // 1547
-
-            totalSeconds = Math.round(sec);
-            console.log(totalSeconds); 
-            console.log(typeof totalSeconds); 
-            totalMinutes = Math.round(min);
-            totalHours= Number.parseFloat(hr).toFixed(2);
-            displayTimerTxt(totalHours, totalMinutes, totalSeconds); 
-
-
-
-
-
-    return timeAsList; 
+    return timeAsList = [rhour, rmin, rsec]; 
 
 } // end of f(x) 
 
