@@ -1,5 +1,5 @@
 
-let timeVarList; // [hours, minutes, seconds]
+let timeAsList; // [hours, minutes, seconds]
 
 
 function showTimer(sessionDuration) {  
