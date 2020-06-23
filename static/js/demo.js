@@ -61,16 +61,13 @@ function showTimer(sessionDuration) {
 
 
 function convert_timeLeftInSession(timeLeftInSession) {
-    // Return timeLeftInSession [ms] as hours, minutes, seconds in list form.
+    // Return timeLeftInSession [s] as hours, minutes, seconds in list form.
+
+    let timeAsList = []; 
 
     if (timeLeftInSession != 0){
-        let timeAsList = []; 
-        // let today = new Date(); 
-        // let timeNow = today.getTime(); 
-        let tiff = timeNow - startTime; // total milliseconds
-
-        // Convert milliseconds given to hr, min, sec. 
-        let sec = tiff/1000; // convert all milliseconds to seconds 
+        
+        let sec = timeLeftInSession; 
         let min = sec/60; // convert all to minutes 
         let hr = min/60; // covert all to hours 
 
