@@ -2,9 +2,7 @@
 
 alert('timer.js has loaded'); 
 
-let workSession = 25 * 60; // 25 min in seconds
-let shortBreakSession = 5 * 60; // 5 min in seconds 
-let longBreakSession = 15 * 60; // 15 min in seconds 
+
 
 let timeInSession; // assign it a value later
 let sessionDuration; // session length [s]
@@ -21,7 +19,7 @@ let timeOfDay; // str
 let militaryHour // int; 24-hr clock 
 
 let dateVars; 
-let timeVars; 
+let timeVars;
 let dateToday; 
 let time; 
 
@@ -51,141 +49,140 @@ let minutes;
 let hours; 
 
 let timeForResumingSession;
-let timeAsList; 
+// let timeLeftInSession; 
+let timeInterval; 
 
-
-
+   let timeAsList = []; 
+    let total_time; 
+    let total_time_left; 
+    let hr; 
+    let min; 
+    let sec;  
+    let result; 
 
 // Event Listeners 
 play.addEventListener('click', () => {
-    console.log('Click Play or Resume'); 
-
+    console.log('Click Play/Resume'); 
     startSession = true; 
-    dropdown = document.getElementById("session_type");
-    session = dropdown.options[dropdown.selectedIndex].value; 
-    sessionDuration = getSelectedSession(session); 
-    showTimer(sessionDuration); // start timer countdown
+    if (pauseSession == false){
+        dropdown = document.getElementById("session_type");
+        session = dropdown.options[dropdown.selectedIndex].value; 
+        getSelectedSession(session); 
+        showTimerCountdown(sessionDuration); // start timer countdown  
+    } else {
+        console.log(hr, min, sec); 
+        const timeRemaining = (1000*((hr*3600) + (min * 60) + sec)); 
+        showTimerCountdown(timeRemaining); 
+    }
+
+});
 
 pause.addEventListener('click', (session) => {
     console.log('Click Pause'); 
 
     pauseSession = true; 
-    showTimer(sessionDuration); 
+    // showTimerCountdown(sessionDuration);  
+    displayTimerTxt(); 
+    clearInterval(result); 
+});
 
 stop.addEventListener('click', (session) => {
     console.log('Click Stop'); 
 
     stopSession = true; 
-    showTimer(sessionDuration); 
+    displayTimerTxt(); 
+    clearInterval(result); 
+}); 
 
 
-function showTimer(sessionDuration) {  
+
+function showTimer(timeLeftInSession) {  
     // show timer countdown when user selects event 
-    timeLeftInSession = Math.round(sessionDuration/1000); // convert millisec to sec 
+    // timeLeftInSession [milliseconds]
     console.log('showTimer started session', timeLeftInSession); 
+    convert_timeLeftInSession(timeLeftInSession); 
+    
+    // Show timer based on user event. 
+    if (timeLeftInSession == 0) { 
+        // Session has ended naturally.
+        displayTimerTxt(); 
+        stopSession = true; 
+        clearInterval(showTimerCountdown); 
 
-    timeVarList = convert_timeLeftInSession(timeLeftInSession); 
+        console.log('END SESSION'); 
+        // Save session details in SQL. 
 
-    // Setinterval(showTimer(timeLeftInSession), 1000) 
-    let showTimerCountdown = setInterval (() => {
-
-        if (timeLeftInSession == 0) { 
-            // Session has ended naturally.
-            displayTimerTxt(timeVarList); 
-            stopSession = true; 
-            clearInterval(show); 
-
-            console.log('END SESSION'); 
-            // Save session details in SQL. 
-
-        } else if (startSession == true && pauseSession == true && stopSession == false) {
-            // If SESSION PAUSED
-            // Show paused timer in browser. 
-            displayTimerTxt(timeVarList); 
-            clearInterval(show); 
-            timeForResumingSession = timeLeftInSession; // track how much of the session time is left 
-            console.log('Session has paused'); 
-
-        } else if (startSession == true && pauseSession == false && stopSession == false) {
-            // If NEW SESSION STARTED
-            // Show timer countdown. 
-            displayTimerTxt(timeVarList); 
-            console.log('New Session'); 
-
-        } else if (startSession == true && pauseSession == true && stopSession == false) {
-            // If RESUME SESSION
-            // Continue timer countdown. 
-            timeLeftInSession = timeForResumingSession; 
-            displayTimerTxt(timeVarList); 
-            console.log('Resume Session'); 
-
-        } else if (startSession == true && pauseSession == false && stopSession == true) {
-            // STOP SESSION before timer reaches 0:00:00.
-            // Don't send session details to SQL. 
-            // End timer countdown. 
-            // Set timer to 0:00:00. 
-            displayTimerTxt(timeVarList); 
-            stopTime = new Date(); // save to SQL 
-            console.log('Stop session'); 
-        }; // end of if 
-
-        timeLeftInSession--; // decrement with every passing second
-        // return new timeVarList for each passing second -> to display timer 
-        timeVarList = convert_timeLeftInSession(timeLeftInSession); 
-    }, 1000); // end of showTimerCountdown()
+    // timeLeftInSession = timeLeftInSession - 1000; // decrement with every 1000 ms (or 1 sec)
+    // return new timeAsList for each passing second -> to display timer 
+    // console.log('after decrement', timeLeftInSession); 
+    convert_timeLeftInSession(timeLeftInSession); 
+    displayTimerTxt(); 
  
 } // end of f(x)
 
 
+let count = 0; 
+
+function showTimerCountdown(timeLeftInSession) {
+    // Show timer every 1000 ms.
+    console.log('Time left in session', timeLeftInSession); 
+    result = setInterval(() => {
+        showTimer(timeLeftInSession); 
+        timeLeftInSession = timeLeftInSession - 1000; 
+    }, 1000); 
+} 
+
+
+
 function convert_timeLeftInSession(timeLeftInSession) {
+    console.log('convert_timeLeftInSession', timeLeftInSession); 
+    // timeLeftInSession [milliseconds]
     // Return timeLeftInSession [s] as hours, minutes, seconds in list form.
 
-    let timeAsList = []; 
-
     if (timeLeftInSession != 0){
-        
-        let sec = timeLeftInSession; 
-        let min = sec/60; // convert all to minutes 
-        let hr = min/60; // covert all to hours 
-
-        let rsec = Math.round(sec % 60); // remaining sec
-        let rmin = Math.round(min % 60); // remaining min 
-        let rhour = Math.round(hr % 60); // hours only 
-
-        console.log('Hr remaining', rhour); 
-        console.log('Min remaining', rmin); 
-        console.log('Sec remaining', rsec); 
+        // timeLeftInSession is given in milliseconds 
+        total_time = timeLeftInSession/1000; // convert to seconds
+        hr = Math.floor(total_time/3600); // extract HOURS
+        total_time_left = total_time % 3600; // get remaining time [s]
+        min = Math.floor(total_time_left/60); // extract MINUTES
+        sec = total_time % 60; // remaining time [s] gives us SECONDS 
+        timeAsList = [hr, min, sec]; 
 
     } else if (timeLeftInSession == 0) {
         timeAsList = [0, 0, 0]; 
-    }
+    } 
 
-    return timeAsList = [rhour, rmin, rsec]; 
 
+
+    console.log('timeAsList', timeAsList); 
+    console.log('time:', hr, min, sec); 
+    console.log(timeAsList[0], 'hrs', timeAsList[1] , 'min', timeAsList[2], 'sec'); 
 } // end of f(x) 
 
 
 
-function displayTimerTxt (timeAsList) {
+function displayTimerTxt () {
     // Display timer info in browser. 
     timer.innerText = `Timer: ${timeAsList[0]} hrs ${timeAsList[1]} min ${timeAsList[2]} sec`;
 } // end of f(x) 
 
 
-
 function getSelectedSession (session) {
+
     console.log('getSelectedSession');
     console.log(session);
     if (session == 'work') {
         console.log('if: Work');
-        callTimer(workSession); 
+        sessionDuration = 25 * 60 * 1000 ; 
+
     } else if (session == "short_break"){
         console.log('if: Short break');
-        callTimer(shortBreakSession);
+        sessionDuration = 5 * 60 * 1000; 
     } else if (session == "long_break"){
         console.log('if: Long Break');
-        callTimer(longBreakSession); 
-    } 
+        sessionDuration = 15 * 60 * 1000; 
+    }
+    // return sessionDuration; 
 } 
 
 
@@ -194,7 +191,6 @@ function showClock() {
 // showClock starts when page is loaded
 
     // Replaced startTime = Date.now() with startTime = new Date()
-    startTime = new Date(); 
     let showClockTime = setInterval(() => {
         let today = new Date(); 
         clock.innerText = today.toLocaleTimeString(); 
@@ -230,7 +226,7 @@ function showDate() {
     today = new Date(); // UNIX time since epoch [ms]         
     dateToday = today.toLocaleDateString(); // Ex. '6/18/2020'
     todayDate.innerText = dateToday; 
-};
+}
 
 
 
@@ -273,8 +269,6 @@ function convertMonth_returnDate(month_index) {
     // return month as a string
     return month;   
  }
-
-
 
 
 // Test: it works! 

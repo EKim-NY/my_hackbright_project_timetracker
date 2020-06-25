@@ -1,5 +1,6 @@
 [
     {
+        "user_id": "1", 
         "project_name": "Intro to Computer Science",
         "project_type": "study", 
         "project_notes": "Exam prep",
@@ -7,6 +8,7 @@
     }, 
 
     {
+        "user_id": "3", 
         "project_name": "A Mouse's Journey to the Big Screen",
         "project_type": "work", 
         "project_notes": "Send bill to Donald Duck",
@@ -14,6 +16,7 @@
     }, 
 
     {
+        "user_id": "2", 
         "project_name": "Donald Duck & His Wonderful Adventures",
         "project_type": "work", 
         "project_notes": "Donald and his friends tour America",

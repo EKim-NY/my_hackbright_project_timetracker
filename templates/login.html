@@ -4,10 +4,11 @@
 
 {% block body %}
 
-  <form>
+  <form action='/login' method='post'>
     <label>Enter login info:</label><br>
-    <input type="text" name="username">
-    <input type="text" name="password"> 
+    <input type="text" name="email">Email 
+    <input type="text" name="password">Password
+    <input type="submit">
   </form>
 
 {% endblock %}

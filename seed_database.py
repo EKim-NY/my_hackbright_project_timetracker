@@ -53,13 +53,14 @@ with open('data/sample_projects.json') as file:
 projects_in_db = []
 
 for project in project_data: 
-    p_name, p_type, p_notes, p_rate = (project['project_name'],  
+    u_id, p_name, p_type, p_notes, p_rate = (project['user_id'],
+                                        project['project_name'],  
                                        project['project_type'], 
                                        project['project_notes'], 
                                        project['project_rate'] 
                                       )
 
-    project_record = crud.create_project(p_name, p_type, p_notes, p_rate)
+    project_record = crud.create_project(u_id, p_name, p_type, p_notes, p_rate)
 
     projects_in_db.append(project_record)
 
@@ -77,7 +78,8 @@ for pomo in pomo_data:
     # pomo_type and the rest of the line into two separate lines? 
     # I couldn't get my multiline f-string earlier to work either. 
     # I'm getting a "pomodoro_type" is not defined error although this file ran w/o issues earlier. 
-    pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end = (pomo['pomodoro_type'],
+    proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end = (pomo['project_id'],
+                                                                           pomo['pomodoro_type'],
                                                                            pomo['pomodoro_length'],
                                                                            pomo['pomodoro_notes'], 
                                                                            pomo['pomodoro_date'], 
@@ -87,7 +89,7 @@ for pomo in pomo_data:
 
     # import pdb; pdb.set_trace()
 
-    pomo_record = crud.create_pomodoro(pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end)
+    pomo_record = crud.create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end)
 
     # Debugging 
     # print("pomo_record:", pomo_record)

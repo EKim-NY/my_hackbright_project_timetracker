@@ -27,7 +27,7 @@ class User(db.Model):
     user_name = db.Column(db.String, nullable=False, unique=True)
     user_email = db.Column(db.String, nullable=False, unique=True)
     user_password = db.Column(db.String, nullable=False, unique=True)
-
+    projects = db.relationship('Project')
 
     def __repr__(self): 
         """Print user details info to terminal."""
@@ -50,11 +50,14 @@ class Project(db.Model):
                            primary_key=True, 
                            autoincrement=True,
                            )
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id')); 
     project_name = db.Column(db.String, nullable=False, unique=True,)
     project_type = db.Column(db.String, nullable=False, unique=False,)
     project_notes = db.Column(db.Text, unique=False,)
     project_rate = db.Column(db.Float, unique=False,)
-
+    user = db.relationship('User')
+    pomodoros = db.relationship('Pomodoro')
     # Check w/Kat if this field is ok
     # AttributeError: SQLAlchemy obj. has no 'Datetime' attribute
     # Further research needed; DateTime was used in one of the labs/HWs? 
@@ -76,10 +79,12 @@ class Pomodoro(db.Model):
                             primary_key=True,
                             autoincrement=True,
                             )
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.project_id'))
     pomodoro_type = db.Column(db.String, nullable=False, unique=False)
     pomodoro_length = db.Column(db.Integer, nullable=False, unique=False)
     pomodoro_notes = db.Column(db.Text)
     pomodoro_date = db.Column(db.String)
+    project = db.relationship('Project')
     # Need to add these fields to sample_pomodoros.json 
     pomodoro_start = db.Column(db.String)
     pomodoro_end = db.Column(db.String) 
