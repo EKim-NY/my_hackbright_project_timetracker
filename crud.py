@@ -67,5 +67,14 @@ def get_user_by_user_id(user_id):
     return User.query.get(user_id) 
     # Get the user by primary key using this shortcut 
     
+def get_project_by_user_id(user_id, project_name): 
+    """SQL query should return selected project for user_id."""
+
+    return Project.query.filter_by(user_id = user_id).first()
+
+def get_session_by_user_id(user_id, date): 
+    """SQL query should return all sessions for user on selected date."""
+
+    # return Pomodoro.query.filter_by(date = pomodoro_date) for user_id 
 
 

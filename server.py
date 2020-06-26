@@ -143,8 +143,6 @@ def create_new_project():
 
 
 
-
-
 @app.route('/session_pg')
 def session_pg(): 
     """Allow user to select a new or existing Pomodoro session."""
@@ -152,27 +150,14 @@ def session_pg():
     return render_template('session.html')
 
 
-# @app.route('/pause_session')
-# def pause_session():
-#     """Allow user to pause/resume a currently active session."""
+@app.route('/project_sessions')
+def show_project_sessions(): 
+    """Show all sessions for seleected project."""
 
-#     return render_template('pause_session.html')
+    if session.get('user_id'): 
+        # project_name = crud.
 
-
-# @app.route('/delete_session')
-# def delete_session():
-#     """Delete session from database if user cancels session."""
-
-#     return render_template('delete_session.html')
-
-
-
-# @app.route('/logout')
-# def logout():
-#     """Display end-of-session message upon logout."""
-
-#     return render_template('logout.html')
-
+        return render_template('project_sessions.html')
 
 
 
