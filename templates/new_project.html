@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}NEW PROJECT{% endblock %}
+
+{% block body %}
+  <!-- CONTAINER FOR ENTIRE CONTENT -->
+  <div class="container" id="project_container"> 
+
+    <form class="forms" id="new_project_form" action="/new_project" method="POST">
+      <label>Create New Project</label><br><br>
+      <input type="text" class="project" name="new_project_name">Project Name<br><br>
+      <input type="text" class="project" name="new_project_type">Project Type<br><br>
+      <input type="text" class="project" name="new_project_rate">Project Rate<br><br>
+      <input type="text" class="project" name="new_project_notes">Project Notes<br><br>
+      <input type="submit" value="Submit">
+    </form><br><br>
+
+
+  </div> <!-- session_container -->
+  
+{% endblock %}  
