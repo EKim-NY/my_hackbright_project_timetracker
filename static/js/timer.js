@@ -2,7 +2,16 @@
 
 alert('timer.js has loaded'); 
 
-
+// Note: 
+// 
+// Issue 1- 
+// When user tries to start a new session after stopping a previous session, 
+// the timer doesn't work as expected. User must click SUBMIT for a page reload 
+// then choose the session interval, then click PLAY button. 
+// 
+// Issue 2- 
+// Trying to get the timer to display "0 hrs 0 min 0 sec" when user clicks STOP 
+// causes the timer to go wonky. 
 
 let timeInSession; // assign it a value later
 let sessionDuration; // session length [s]
@@ -23,7 +32,6 @@ let timeVars;
 let dateToday; 
 let time; 
 
-
 let timer = document.getElementById("timerTime");
 let clock = document.getElementById("clockTime"); 
 let todayDate = document.getElementById("todayDate");
@@ -32,7 +40,6 @@ let startSession = true;
 let pauseSession = false; 
 let stopSession = false; 
 
-// Select DOM elements. 
 let play = document.getElementById("pomodoro-play"); 
 let pause = document.getElementById("pomodoro-pause"); 
 let stop = document.getElementById("pomodoro-stop"); 
@@ -49,16 +56,16 @@ let minutes;
 let hours; 
 
 let timeForResumingSession;
-// let timeLeftInSession; 
-let timeInterval; 
-
-   let timeAsList = []; 
-    let total_time; 
-    let total_time_left; 
-    let hr; 
-    let min; 
-    let sec;  
-    let result; 
+// In JS: 
+// timeLeftInSession was changed to a local var to be passed in as an arg for f(x)'s 
+// b/c having it as both a global and as an arg caused conflict
+let timeAsList = []; 
+let total_time; 
+let total_time_left; 
+let hr; 
+let min; 
+let sec;  
+let result; 
 
 // Event Listeners 
 play.addEventListener('click', () => {
@@ -90,8 +97,10 @@ stop.addEventListener('click', (session) => {
     console.log('Click Stop'); 
 
     stopSession = true; 
+    // timeAsList=[0,0,0];
     displayTimerTxt(); 
     clearInterval(result); 
+    alert('Your session has stopped.')
 }); 
 
 
@@ -110,18 +119,16 @@ function showTimer(timeLeftInSession) {
         clearInterval(showTimerCountdown); 
 
         console.log('END SESSION'); 
-        // Save session details in SQL. 
+    } // end of if
 
     // timeLeftInSession = timeLeftInSession - 1000; // decrement with every 1000 ms (or 1 sec)
     // return new timeAsList for each passing second -> to display timer 
-    // console.log('after decrement', timeLeftInSession); 
+
     convert_timeLeftInSession(timeLeftInSession); 
     displayTimerTxt(); 
- 
 } // end of f(x)
 
 
-let count = 0; 
 
 function showTimerCountdown(timeLeftInSession) {
     // Show timer every 1000 ms.
@@ -157,6 +164,8 @@ function convert_timeLeftInSession(timeLeftInSession) {
     console.log('timeAsList', timeAsList); 
     console.log('time:', hr, min, sec); 
     console.log(timeAsList[0], 'hrs', timeAsList[1] , 'min', timeAsList[2], 'sec'); 
+
+    return timeAsList 
 } // end of f(x) 
 
 
@@ -164,6 +173,7 @@ function convert_timeLeftInSession(timeLeftInSession) {
 function displayTimerTxt () {
     // Display timer info in browser. 
     timer.innerText = `Timer: ${timeAsList[0]} hrs ${timeAsList[1]} min ${timeAsList[2]} sec`;
+    console.log('In displayTimerTxt():', timer.innerText) 
 } // end of f(x) 
 
 

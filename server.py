@@ -86,7 +86,8 @@ def create_new_account():
     n_email = request.form.get('new_email')
     n_password = request.form.get('new_password')
 
-    crud.create_user(n_username, n_email, n_password)
+    new_user = crud.create_user(n_username, n_email, n_password)
+    session['user_id'] = new_user.user_id
     flash('Congrats! Your new account has been created.')
 
     # Display msg on page to confirm. 
@@ -96,18 +97,24 @@ def create_new_account():
 def view_projects(): 
     """View existing projects and their details."""
 
-    return render_template('projects.html')
+    user = crud.get_user_by_user_id(session['user_id'])
+    return render_template('projects.html', projects = user.projects)
+    # projects is a named arg (different from a default param)
 
 
 @app.route('/projects', methods=['POST'])
 def show_existing_projects(): 
 
     if session.get('user_id'):  
-        user = crud.get_user_by_user_id(session['user_id'])
-        return render_template('projects.html', projects = user.projects)
 
         # What if the user has no saved projects in history?
- 
+        dropdown = request.form.get('project_dropdown_box')
+        # console.log('project_dropdown_box', dropdown)
+        if dropdown == 'search_existing_project': 
+            return redirect('/view_project_sessions')
+        elif dropdown == 'create_new_project': 
+            return redirect('/new_project')
+
     else: 
         flash('Please login to see your projects.')
         return redirect('/login')
@@ -115,19 +122,21 @@ def show_existing_projects():
 
 
 
-@app.route('/new_project', methods=['POST'])
+@app.route('/new_project', methods=['GET','POST'])
 def create_new_project(): 
     """Create new project for user."""
 
     if session.get('user_id'): 
-        np_name = request.form.get('new_project_name')
-        np_type = request.form.get('new_project_type')
-        np_rate = request.form.get('new_project_rate') 
-        np_notes = request.form.get('new_project_notes')
+        if request.method == 'POST': 
+            np_name = request.form.get('new_project_name')
+            np_type = request.form.get('new_project_type')
+            np_rate = request.form.get('new_project_rate') 
+            np_notes = request.form.get('new_project_notes')
 
-        crud.create_project(session.get('user_id'), np_name, np_type, np_rate, np_notes)
-        return redirect('/session_pg')
-    
+            crud.create_project(session.get('user_id'), np_name, np_type, np_rate, np_notes)
+            return redirect('/session_pg')
+        else: 
+            return render_template('new_project.html')
     else: 
         flash('Please create new account to create a new project or login to see existing projects.')
         return redirect('/login') 

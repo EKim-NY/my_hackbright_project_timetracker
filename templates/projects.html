@@ -7,11 +7,11 @@
   <div class="container" id="project_container"> 
 
     {# FORM #}
-    <form class="forms" id="project_form" action='/projects' method="post">
+    <form class="forms" name="project_form" action='/projects' method="post">
       <label>Select Project</label><br><br>
         {# Dropdown #}
         <select class="project_dropdown" name="project_dropdown_box" id="project_type">
-          <option class="project_option" value="show_existing_project"> Existing Project </option>
+          <option class="project_option" value="search_existing_project"> Existing Project </option>
           <option class="project_option" value="create_new_project"> New Project </option>
         </select><br><br> 
         {# Dropdown #}

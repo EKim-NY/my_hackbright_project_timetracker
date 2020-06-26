@@ -20,7 +20,7 @@ def create_user(user_name, user_email, user_password):
     return user 
 
 
-def create_project(u_id, p_name, p_type, p_notes, p_rate): 
+def create_project(u_id, p_name, p_type, p_rate, p_notes): 
     """Create a project in the db."""
 
     project = Project(user_id = u_id, 
