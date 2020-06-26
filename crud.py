@@ -1,5 +1,8 @@
 """Store utility functions here."""
 
+"""This file acts as a liaison between the server and pSQL. It creates, 
+updates, or retrieves data from the pSQL db by the way of SQL-Alchemy."""
+
 from model import db, User, Project, Pomodoro, connect_to_db
 
 
@@ -21,7 +24,7 @@ def create_project(u_id, p_name, p_type, p_notes, p_rate):
     """Create a project in the db."""
 
     project = Project(user_id = u_id, 
-                     project_name = p_name,
+                      project_name = p_name,
                       project_type = p_type, 
                       project_notes = p_notes, 
                       project_rate = p_rate
@@ -53,11 +56,16 @@ def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo
 
 
 def get_user_by_email(email): 
+    """SQL query should return user by email."""
 
     return User.query.filter_by(user_email = email).first()
 
 
+def get_user_by_user_id(user_id): 
+    """SQL query should return all projects associated with user by user_id."""
 
-
+    return User.query.get(user_id) 
+    # Get the user by primary key using this shortcut 
+    
 
 

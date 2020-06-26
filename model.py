@@ -1,4 +1,4 @@
-"""Create model objects for database."""
+"""Create model objects for seeding the database."""
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -75,10 +75,7 @@ class Pomodoro(db.Model):
 
     __tablename__ = "pomodoros"
 
-    pomodoro_id = db.Column(db.Integer,
-                            primary_key=True,
-                            autoincrement=True,
-                            )
+    pomodoro_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.project_id'))
     pomodoro_type = db.Column(db.String, nullable=False, unique=False)
     pomodoro_length = db.Column(db.Integer, nullable=False, unique=False)
@@ -86,8 +83,9 @@ class Pomodoro(db.Model):
     pomodoro_date = db.Column(db.String)
     project = db.relationship('Project')
     # Need to add these fields to sample_pomodoros.json 
-    pomodoro_start = db.Column(db.String)
-    pomodoro_end = db.Column(db.String) 
+    pomodoro_date = db.Column(db.String)
+
+
 
 
     def __repr__(self): 

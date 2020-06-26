@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}SESSION{% endblock %}
+{% block title %} SESSION {% endblock %}
 
 {% block body %}
   <!-- CONTAINER FOR ENTIRE CONTENT -->
     <div class="container" id="session_container"> 
+
       <!-- FORM --> 
       <form class="forms" id="session_form">
         <label>Select session details.</label>
@@ -19,34 +20,37 @@
           <option value="long_break">Long Break</option>
         </select><br><br>
         <input type="submit" value="Submit">
-      </form>
-        <br><br>
-        <!-- display timer --> 
+      </form><br><br>
+      <!-- END OF FORM -->
+
+      <!-- DISPLAY TIMER --> 
       <span class="time">
         <div class="time_stuff" id="todayDate">DATE</div>
         <div class="time_stuff" id="clockTime">CLOCK</div> 
         <div class="time_stuff" id="timerTime">TIMER</div> 
       </span>
-        <!-- PLAY, PAUSE, RESUME, STOP BUTTONS -->
+
+      <!-- PLAY, PAUSE, RESUME, STOP BUTTONS -->
       <span class="icons">
         <div class="action_icons">
-            <button id="pomodoro-play">
-                <i class="fas fa-play" id="play-icon"></i>
-            </button>
-            <button id="pomodoro-pause">
-                <i class="fas fa-pause hidden" id="pause-icon"></i>
-            </button>
-            <button id="pomodoro-stop">
-                <i class="fas fa-stop" id="stop-icon"></i>
-            </button>
+          <button id="pomodoro-play">
+              <i class="fas fa-play" id="play-icon"></i>
+          </button>
+          <button id="pomodoro-pause">
+              <i class="fas fa-pause hidden" id="pause-icon"></i>
+          </button>
+          <button id="pomodoro-stop">
+              <i class="fas fa-stop" id="stop-icon"></i>
+          </button>
         </div>
-      </span>
-        <br><br>
+      </span><br><br> <!--ICONS-->
+
       <div class="session_log">
         <h3>Session History</h3>
     <!-- Display session blocks representing chunks of time and session types in different colors along with centered text-->
       </div>
     </div> <!-- session_container -->
+    
 {% endblock %}
 
 {% block after_body %}

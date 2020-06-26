@@ -6,15 +6,16 @@
 
   <h3>Welcome to your own Pomodoro app!</h3>
 
-  <form>
+  <form action='/' method="POST">
 
     <label>Are you a new or an existing user?</label>
     <br>
-    <select name="user">
-      <option value="new user">New User</option>
-      <option value="existing user">Existing User</option>
+    <select name="user_selection">
+      {# name applies to the user selected option #}
+      <option value="new_user">New User</option>
+      <option value="existing_user">Existing User</option>   
     </select>
-
+    <input type="submit" value="Submit">
   </form>
 
 {% endblock %}

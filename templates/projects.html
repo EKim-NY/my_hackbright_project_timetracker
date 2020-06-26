@@ -1,27 +1,41 @@
 {% extends 'base.html' %}
 
-{% block title %}PROJECT{% endblock %}
+{% block title %}PROJECTS{% endblock %}
 
 {% block body %}
-  <!-- CONTAINER FOR ENTIRE CONTENT -->
+  {# PROJECT CONTAINER #}
   <div class="container" id="project_container"> 
-    <!-- FORM --> 
-    <form class="forms" id="project_form">
-      <label>Select project details.</label>
-      <br>
-      <input type="text" id="project_name"><br>
-      <select class="project_option" id="project_type">
-        <option value="work">Work</option>
-        <option value="break">Break</option>
-        <option value="custom">Custom</option>
-      </select><br>
-      <input type="text" id="project_rate"><br>
-        <!-- Display previous specified rates here -->
+
+    {# FORM #}
+    <form class="forms" id="project_form" action='/projects' method="post">
+      <label>Select Project</label><br><br>
+        {# Dropdown #}
+        <select class="project_dropdown" name="project_dropdown_box" id="project_type">
+          <option class="project_option" value="show_existing_project"> Existing Project </option>
+          <option class="project_option" value="create_new_project"> New Project </option>
+        </select><br><br> 
+        {# Dropdown #}
       <input type="submit" value="Submit">
-    </form>
-    <div class="session_log">
-      <!-- Display session blocks representing chunks of time and session types in different colors along with centered text-->
+    </form><br><br>
+    {# FORM #}
+
+    {# PROJECTS LOG #}
+    <div class="projects_log">
+      <label>Project History</label>
+      {# for loop shows up empty if no items are in it; we want this result in HTML  #}
+      {% for project in projects %}
+      <div class="projects" id="{{project.project_id}}">
+        <h3>{{ project.project_name }}</h3>
+        <p>{{ project.project_rate }}</p>
+        <p>{{ project.project_notes }}</p>
+
+        {# Show dates of creation and last worked-on for project #}
+
+      </div>
+      {% endfor %}
     </div>
-  </div> <!-- session_container -->
-  
+    {# PROJECTS LOG #}
+
+  </div> 
+  {# PROJECT CONTAINER #}
 {% endblock %}
