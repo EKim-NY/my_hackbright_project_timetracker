@@ -9,13 +9,15 @@ from twilio.rest import Client
 # DANGER! This is insecure. See http://twil.io/secure
 account_sid = 'AC24ab7a1a343a1d8a89e910e697b27927'
 auth_token = 'e87aea0a0b5260733765357ff9731752'
+
+
 client = Client(account_sid, auth_token)
 
 message = client.messages \
                 .create(
                      body="Timetracker: Your session has ended.",
                      from_='+12056228672',
-                     to='+16462839106'
+                     to='+18603659132'
                  )
 
 print(message.sid)

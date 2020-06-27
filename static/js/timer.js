@@ -71,7 +71,6 @@ let result;
 
 
 
-print(msgEndSession.sid)
 
 // Event Listeners 
 play.addEventListener('click', () => {
