@@ -2,6 +2,7 @@
 
 alert('timer.js has loaded'); 
 
+
 // Note: 
 // 
 // Issue 1- 
@@ -36,7 +37,7 @@ let timer = document.getElementById("timerTime");
 let clock = document.getElementById("clockTime"); 
 let todayDate = document.getElementById("todayDate");
 
-let startSession = true; 
+let startSession = false; 
 let pauseSession = false; 
 let stopSession = false; 
 
@@ -67,63 +68,90 @@ let min;
 let sec;  
 let result; 
 
+
+
+
+print(msgEndSession.sid)
+
 // Event Listeners 
 play.addEventListener('click', () => {
-    console.log('Click Play/Resume'); 
-    startSession = true; 
-    if (pauseSession == false){
-        dropdown = document.getElementById("session_type");
-        session = dropdown.options[dropdown.selectedIndex].value; 
-        getSelectedSession(session); 
-        showTimerCountdown(sessionDuration); // start timer countdown  
-    } else {
-        console.log(hr, min, sec); 
+
+    if (startSession == false && pauseSession == false && stopSession == false){
+        // START NEW SESSION 
+        startSession = true; 
+        getSelectedSession(); 
+        showTimerCountdown(sessionDuration); 
+        alert('New Session has started'); 
+
+
+    } else if (startSession == true && pauseSession == true && stopSession == false){
+        // RESUME CURRENT SESSION
+        pauseSession = false; 
         const timeRemaining = (1000*((hr*3600) + (min * 60) + sec)); 
         showTimerCountdown(timeRemaining); 
-    }
+        alert('Resume current session'); 
+    } else {
+        // When user pauses session but doesn't stop it before selecting a new session,
+        // the timer for the previous session continues displaying. 
+        // Notify user that the previous session must be stopped first before a new one can start. 
+        showTimerCountdown(timeLeftInSession); 
+        alert('Keep session going'); 
 
+    }
 });
+
 
 pause.addEventListener('click', (session) => {
-    console.log('Click Pause'); 
-
-    pauseSession = true; 
-    // showTimerCountdown(sessionDuration);  
-    displayTimerTxt(); 
-    clearInterval(result); 
+    if (startSession == true && pauseSession == false && stopSession == false){
+            pauseSession = true; 
+            displayTimerTxt(); 
+            clearInterval(result); 
+            alert('Paused session'); 
+    }
 });
 
-stop.addEventListener('click', (session) => {
-    console.log('Click Stop'); 
 
-    stopSession = true; 
-    // timeAsList=[0,0,0];
+
+stop.addEventListener('click', (session) => {
+ 
+    if (startSession == true && stopSession == false){
+    timeAsList=[0,0,0];  
     displayTimerTxt(); 
     clearInterval(result); 
-    alert('Your session has stopped.')
+    // Reset boolean values for the next session
+    startSession = false; 
+    pauseSession = false; 
+    stopSession = false; 
+    }
 }); 
+
+
+
+function getSelectedSession () {
+
+    dropdown = document.getElementById("session_type");
+    session = dropdown.options[dropdown.selectedIndex].value; 
+    console.log('session', session); 
+
+    if (session == 'work') {
+        console.log('dropdown: Work');
+        sessionDuration = 0.30 * 60 * 1000 ; 
+
+    } else if (session == "short_break"){
+        console.log('dropdown: Short break');
+        sessionDuration = 0.10 * 60 * 1000; 
+
+    } else if (session == "long_break"){
+        console.log('dropdown: Long Break');
+        sessionDuration = 0.25 * 60 * 1000; 
+    }
+}
 
 
 
 function showTimer(timeLeftInSession) {  
     // show timer countdown when user selects event 
     // timeLeftInSession [milliseconds]
-    console.log('showTimer started session', timeLeftInSession); 
-    convert_timeLeftInSession(timeLeftInSession); 
-    
-    // Show timer based on user event. 
-    if (timeLeftInSession == 0) { 
-        // Session has ended naturally.
-        displayTimerTxt(); 
-        stopSession = true; 
-        clearInterval(showTimerCountdown); 
-
-        console.log('END SESSION'); 
-    } // end of if
-
-    // timeLeftInSession = timeLeftInSession - 1000; // decrement with every 1000 ms (or 1 sec)
-    // return new timeAsList for each passing second -> to display timer 
-
     convert_timeLeftInSession(timeLeftInSession); 
     displayTimerTxt(); 
 } // end of f(x)
@@ -132,17 +160,49 @@ function showTimer(timeLeftInSession) {
 
 function showTimerCountdown(timeLeftInSession) {
     // Show timer every 1000 ms.
-    console.log('Time left in session', timeLeftInSession); 
+    // console.log('Time left in session', timeLeftInSession); 
     result = setInterval(() => {
-        showTimer(timeLeftInSession); 
-        timeLeftInSession = timeLeftInSession - 1000; 
+
+        if (timeLeftInSession != 0){
+            showTimer(timeLeftInSession); 
+            timeLeftInSession = timeLeftInSession - 1000; 
+
+        } else if (timeLeftInSession == 0){
+            startSession = false; 
+            pauseSession = false; 
+            stopSession = false; 
+            clearInterval(result); 
+            showTimer(timeLeftInSession);
+
+
+
+            // $.post('/save_session', {'date':'DATE'}, (res) => {
+            //     console.log(res); 
+            // }); 
+
+            // Create object to use in jquery POST request to server.py 
+            let session_to_send = {
+                'project_id': 2, 
+                'session_type': session, 
+                'session_length': 25, 
+                'session_date': new Date(), 
+                'session_time': "12:45 PM"
+            }
+                
+            // res (response) comes from the server ; not input param! 
+            $.post('/save_session', session_to_send, (res) => {
+                console.log(res); 
+                // Display session log in browser
+            }); 
+        }
     }, 1000); 
+
 } 
 
 
 
 function convert_timeLeftInSession(timeLeftInSession) {
-    console.log('convert_timeLeftInSession', timeLeftInSession); 
+    // console.log('convert_timeLeftInSession', timeLeftInSession); 
     // timeLeftInSession [milliseconds]
     // Return timeLeftInSession [s] as hours, minutes, seconds in list form.
 
@@ -161,9 +221,9 @@ function convert_timeLeftInSession(timeLeftInSession) {
 
 
 
-    console.log('timeAsList', timeAsList); 
-    console.log('time:', hr, min, sec); 
-    console.log(timeAsList[0], 'hrs', timeAsList[1] , 'min', timeAsList[2], 'sec'); 
+    // console.log('timeAsList', timeAsList); 
+    // console.log('time:', hr, min, sec); 
+    // console.log(timeAsList[0], 'hrs', timeAsList[1] , 'min', timeAsList[2], 'sec'); 
 
     return timeAsList 
 } // end of f(x) 
@@ -173,27 +233,10 @@ function convert_timeLeftInSession(timeLeftInSession) {
 function displayTimerTxt () {
     // Display timer info in browser. 
     timer.innerText = `Timer: ${timeAsList[0]} hrs ${timeAsList[1]} min ${timeAsList[2]} sec`;
-    console.log('In displayTimerTxt():', timer.innerText) 
+    // console.log('In displayTimerTxt():', timer.innerText) 
 } // end of f(x) 
 
 
-function getSelectedSession (session) {
-
-    console.log('getSelectedSession');
-    console.log(session);
-    if (session == 'work') {
-        console.log('if: Work');
-        sessionDuration = 25 * 60 * 1000 ; 
-
-    } else if (session == "short_break"){
-        console.log('if: Short break');
-        sessionDuration = 5 * 60 * 1000; 
-    } else if (session == "long_break"){
-        console.log('if: Long Break');
-        sessionDuration = 15 * 60 * 1000; 
-    }
-    // return sessionDuration; 
-} 
 
 
 

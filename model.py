@@ -83,7 +83,10 @@ class Pomodoro(db.Model):
     pomodoro_date = db.Column(db.String)
     project = db.relationship('Project')
     # Need to add these fields to sample_pomodoros.json 
-    pomodoro_date = db.Column(db.String)
+    pomodoro_start = db.Column(db.String)
+
+
+
 
 
 

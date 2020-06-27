@@ -1,4 +1,7 @@
 # Download the helper library from https://www.twilio.com/docs/python/install
+
+# NOTE: THIS FILE IS IN PYTHON! 
+
 from twilio.rest import Client
 
 
@@ -10,7 +13,7 @@ client = Client(account_sid, auth_token)
 
 message = client.messages \
                 .create(
-                     body="Join Earth's mightiest heroes. Like Kevin Bacon.",
+                     body="Timetracker: Your session has ended.",
                      from_='+12056228672',
                      to='+16462839106'
                  )

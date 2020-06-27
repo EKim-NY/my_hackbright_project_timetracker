@@ -36,7 +36,7 @@ def create_project(u_id, p_name, p_type, p_rate, p_notes):
     return project 
 
 
-def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end): 
+def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start): 
     """Create a pomodoro session in the db."""
 
     pomodoro = Pomodoro(project_id = proj_id, 
@@ -45,7 +45,6 @@ def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo
                         pomodoro_notes  = pomo_notes, 
                         pomodoro_date = pomo_date,
                         pomodoro_start = pomo_start, 
-                        pomodoro_end = pomo_end
                         )
 
     
@@ -71,6 +70,12 @@ def get_project_by_user_id(user_id, project_name):
     """SQL query should return selected project for user_id."""
 
     return Project.query.filter_by(user_id = user_id).first()
+
+def get_project_by_project_id(project_id): 
+    """SQL query should return selected project for project_id."""
+
+    return Project.query.get(project_id)
+
 
 def get_session_by_user_id(user_id, date): 
     """SQL query should return all sessions for user on selected date."""

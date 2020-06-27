@@ -143,16 +143,40 @@ def create_new_project():
 
 
 
-@app.route('/session_pg')
-def session_pg(): 
+@app.route('/session_pg/<project_id>') 
+def session_pg(project_id): 
     """Allow user to select a new or existing Pomodoro session."""
 
-    return render_template('session.html')
+    project = crud.get_project_by_project_id(project_id)
+
+    return render_template('session.html', project = project)
+
+
+@app.route('/save_session', methods=['POST'])
+def save_session(): 
+    """Allow user to save a completed work session to the database."""
+
+    # request.form.get gets session info from JS
+    print('*******')
+    s_id = request.form.get('session_id') 
+    s_type = request.form.get('session_type') 
+    s_len = request.form.get('session_length') 
+    s_date = request.form.get('session_date') 
+    s_time = request.form.get('session_time') 
+    crud.create_pomodoro(s_id, s_type, s_len, "NOTES", s_date, s_time)
+    print('*******')
+
+
+
+    return "SAVE SESSION" 
+    # response from server
+
+# create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start): 
 
 
 @app.route('/project_sessions')
 def show_project_sessions(): 
-    """Show all sessions for seleected project."""
+    """Show all sessions for selected project."""
 
     if session.get('user_id'): 
         # project_name = crud.
