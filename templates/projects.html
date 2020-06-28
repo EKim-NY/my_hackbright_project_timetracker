@@ -26,7 +26,8 @@
       {% for project in projects %}
       <div class="projects" id="{{project.project_id}}">
         <h3>{{ project.project_name }}</h3>
-        <a href="/session_pg/{{ project.project_id }}">Link</a>
+        {# <a href="/session_pg/{{ project.project_id }}">Link</a> #}
+        <a href="/session_pg{{project.project_id}}">Link</a>
         <p>{{ project.project_rate }}</p>
         <p>{{ project.project_notes }}</p>
 

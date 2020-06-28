@@ -54,10 +54,12 @@ def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo
     return pomodoro 
 
 
+
 def get_user_by_email(email): 
     """SQL query should return user by email."""
 
     return User.query.filter_by(user_email = email).first()
+
 
 
 def get_user_by_user_id(user_id): 
@@ -66,20 +68,33 @@ def get_user_by_user_id(user_id):
     return User.query.get(user_id) 
     # Get the user by primary key using this shortcut 
     
+
+
 def get_project_by_user_id(user_id, project_name): 
     """SQL query should return selected project for user_id."""
 
     return Project.query.filter_by(user_id = user_id).first()
 
+
+
 def get_project_by_project_id(project_id): 
     """SQL query should return selected project for project_id."""
 
-    return Project.query.get(project_id)
+    return Project.query.get(project_id) 
+    # returns a Project object from SQL using its primary key 
 
 
-def get_session_by_user_id(user_id, date): 
-    """SQL query should return all sessions for user on selected date."""
 
-    # return Pomodoro.query.filter_by(date = pomodoro_date) for user_id 
+# def get_sessions_by_project_id(project_id): 
+#     """SQL query should return all sessions for a project using its project_id."""
+
+#     return Pomodoro.query.filter_by(    ).all()
+
+
+
+# def get_session_by_user_id_date(user_id, date): 
+#     """SQL query should return all sessions for user on selected date."""
+
+#     return Pomodoro.query.filter_by(date = pomodoro_date) for user_id 
 
 

@@ -11,6 +11,7 @@
     <title>
       {% block title %}{% endblock %}
     </title>
+
     {% block head %}
       <h1>My Little Tomato</h1>
       <img src="/static/tomato_clipart.jpg">
@@ -19,21 +20,45 @@
 
   <body>
     {% for msg in get_flashed_messages() %}
-    msg
+    {{msg}}
     {% endfor %}
 
-    {% block body %}{% endblock %}
+    {% block body %}
 
-    {% block after_body %}
-      <span class="footer_container">FOOTER</span>
+   
     {% endblock %}
+      <span class="footer_container">FOOTER</span>
+      {# Place footer that stays fixed here (after endblock) #}
 
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
     </script>
-    <script src="static/js/demo.js"></script>
+
+  {#   <script src="static/js/demo.js"></script> #}
+
+    {# {% block afterbody %} Place script tags unique to specific pages in block afterbody #}
     <script src="static/js/timer.js"></script>
-    {# <script src="static/js/demo.js"></script> #}
+
+
     <!-- <script src="./toggleFunction.js"></script> -->
 <!--     ./ is for linking a single JS file to this HTML doc -->
+
+{# Placing this here does not cause timer.js to load on session page #}
+{#   {% block afterbody %}
+    <script src="static/js/timer.js"></script>
+  {% endblock %} #}
+
+  {# Including script tags inside afterbody block does not cause timer.js to load  #}
+  {# on the session page although it seemed to have worked fine last night but was  #}
+  {# before the Project object was being passed in to session.html in Flask.  #}
+{#   {% block afterbody %}
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
+    </script>
+    <script src="static/js/timer.js"></script>
+  {% endblock %} #}
+
+
+
   </body>
+
+
 </html>

@@ -181,22 +181,29 @@ function showTimerCountdown(timeLeftInSession) {
 
             // Create object to use in jquery POST request to server.py 
             let session_to_send = {
-                'project_id': 2, 
+                'project_id': 2, // to do: replace w/actual project id; use jQuery to get it back out of JINJA 
                 'session_type': session, 
                 'session_length': 25, 
                 'session_date': new Date(), 
                 'session_time': "12:45 PM"
             }
-                
+            
             // res (response) comes from the server ; not input param! 
-            $.post('/save_session', session_to_send, (res) => {
-                console.log(res); 
-                // Display session log in browser
-            }); 
-        }
-    }, 1000); 
+            $.post('/save_session', session_to_send, (response) => {
+                let strObj = JSON.parse(response); 
+                console.log(strObj); 
+                // console.log(strObj[0]); 
+                // console.log(strObj[1]); 
+                console.log(strObj["session_type"]);
+                console.log(strObj["session_time"]);
 
-} 
+                // Display session log in browser
+
+            }); 
+        } 
+    }, 1000); // end of setInterval() 
+} // end of f(x)
+
 
 
 

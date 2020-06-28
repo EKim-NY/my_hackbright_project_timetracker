@@ -9,6 +9,7 @@ functions in crud.py as a liaison to store/fetch stuff from the SQL db."""
 from flask import (Flask, render_template, request, flash, session, redirect)
 from model import db, connect_to_db 
 import crud
+import json 
 
 # Make jinja2 throw errors for undefined vars
 from jinja2 import StrictUndefined 
@@ -109,9 +110,10 @@ def show_existing_projects():
 
         # What if the user has no saved projects in history?
         dropdown = request.form.get('project_dropdown_box')
-        # console.log('project_dropdown_box', dropdown)
         if dropdown == 'search_existing_project': 
-            return redirect('/view_project_sessions')
+            # return redirect('/view_project_sessions') // Page doesn't exist yet! 
+            # return redirect('/project_sessions') 
+            return redirect('/session_pg/<project_name>')
         elif dropdown == 'create_new_project': 
             return redirect('/new_project')
 
@@ -133,8 +135,10 @@ def create_new_project():
             np_rate = request.form.get('new_project_rate') 
             np_notes = request.form.get('new_project_notes')
 
-            crud.create_project(session.get('user_id'), np_name, np_type, np_rate, np_notes)
-            return redirect('/session_pg')
+            new_project_obj = crud.create_project(session.get('user_id'), np_name, np_type, np_rate, np_notes)
+            # return redirect(f'/session_pg/{new_project_obj.project_id}')
+            return redirect('/session_pg/<project_name>')
+
         else: 
             return render_template('new_project.html')
     else: 
@@ -142,14 +146,16 @@ def create_new_project():
         return redirect('/login') 
 
 
-
-@app.route('/session_pg/<project_id>') 
+# Weird bug found! Removing the slash b/n session_pg and <project_id> in @app.route
+@app.route('/session_pg<project_id>') 
 def session_pg(project_id): 
     """Allow user to select a new or existing Pomodoro session."""
 
-    project = crud.get_project_by_project_id(project_id)
+    project = crud.get_project_by_project_id(project_id)  
 
     return render_template('session.html', project = project)
+
+
 
 
 @app.route('/save_session', methods=['POST'])
@@ -166,10 +172,13 @@ def save_session():
     crud.create_pomodoro(s_id, s_type, s_len, "NOTES", s_date, s_time)
     print('*******')
 
-
-
-    return "SAVE SESSION" 
-    # response from server
+    # return s_type, s_time (filter by user_id, project_id, session_date(today))
+    python_dict = {"session_type": s_type, "session_time": s_time}
+            
+   
+    return json.dumps(python_dict)
+    # return json.dumps([s_type, s_time]) 
+    # response from server 
 
 # create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start): 
 
