@@ -36,7 +36,7 @@ def create_project(u_id, p_name, p_type, p_rate, p_notes):
     return project 
 
 
-def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start): 
+def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_end): 
     """Create a pomodoro session in the db."""
 
     pomodoro = Pomodoro(project_id = proj_id, 
@@ -44,7 +44,7 @@ def create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo
                         pomodoro_length = pomo_length, 
                         pomodoro_notes  = pomo_notes, 
                         pomodoro_date = pomo_date,
-                        pomodoro_start = pomo_start, 
+                        pomodoro_timestamp = pomo_end, 
                         )
 
     
@@ -85,16 +85,21 @@ def get_project_by_project_id(project_id):
 
 
 
-# def get_sessions_by_project_id(project_id): 
-#     """SQL query should return all sessions for a project using its project_id."""
+def get_sessions_by_project_id(project_id): 
+    """SQL query should return all sessions from all dates for a project using its project_id."""
 
-#     return Pomodoro.query.filter_by(    ).all()
+    return Pomodoro.query.filter_by(project_id = project_id).all()
+    # Returns all Pomodoro sessions or Pomodoro objects filtered by project_id 
 
 
 
-# def get_session_by_user_id_date(user_id, date): 
+# # To-do: 
+# def get_session_by_project_id_and_date(project_id, date): 
 #     """SQL query should return all sessions for user on selected date."""
 
-#     return Pomodoro.query.filter_by(date = pomodoro_date) for user_id 
+#     Pomodoro.query.filter_by(user_id)
+#     Pomodoro.query.filter_by(pomodoro_date = date).all()
+#     Pomodoro.query.filter_by(project_id = project)
+
 
 

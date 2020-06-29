@@ -80,7 +80,7 @@ play.addEventListener('click', () => {
         startSession = true; 
         getSelectedSession(); 
         showTimerCountdown(sessionDuration); 
-        alert('New Session has started'); 
+        // alert('New Session has started'); 
 
 
     } else if (startSession == true && pauseSession == true && stopSession == false){
@@ -88,13 +88,13 @@ play.addEventListener('click', () => {
         pauseSession = false; 
         const timeRemaining = (1000*((hr*3600) + (min * 60) + sec)); 
         showTimerCountdown(timeRemaining); 
-        alert('Resume current session'); 
+        // alert('Resume current session'); 
     } else {
         // When user pauses session but doesn't stop it before selecting a new session,
         // the timer for the previous session continues displaying. 
         // Notify user that the previous session must be stopped first before a new one can start. 
         showTimerCountdown(timeLeftInSession); 
-        alert('Keep session going'); 
+        // alert('Keep session going'); 
 
     }
 });
@@ -105,7 +105,7 @@ pause.addEventListener('click', (session) => {
             pauseSession = true; 
             displayTimerTxt(); 
             clearInterval(result); 
-            alert('Paused session'); 
+            // alert('Paused session'); 
     }
 });
 
@@ -129,22 +129,36 @@ stop.addEventListener('click', (session) => {
 function getSelectedSession () {
 
     dropdown = document.getElementById("session_type");
+    // dropdown.options[0].disabled = true; // Disable 'Select' dropdown option. 
     session = dropdown.options[dropdown.selectedIndex].value; 
-    console.log('session', session); 
+    // console.log('session', session); 
 
-    if (session == 'work') {
-        console.log('dropdown: Work');
-        sessionDuration = 0.30 * 60 * 1000 ; 
+    // if (session != "select"){
+        if (session == 'work') {
+            // console.log('dropdown: Work');
+            sessionDuration = 0.30 * 60 * 1000 ; 
 
-    } else if (session == "short_break"){
-        console.log('dropdown: Short break');
-        sessionDuration = 0.10 * 60 * 1000; 
+        } else if (session == "short_break"){
+            // console.log('dropdown: Short break');
+            sessionDuration = 0.10 * 60 * 1000; 
 
-    } else if (session == "long_break"){
-        console.log('dropdown: Long Break');
-        sessionDuration = 0.25 * 60 * 1000; 
-    }
-}
+        } else if (session == "long_break"){
+            // console.log('dropdown: Long Break');
+            sessionDuration = 0.25 * 60 * 1000; 
+        } 
+
+        // TO-DO: Add "Select" option to dropdown box.
+        // Curent bug: sessionDuration keeps displaying for "Select" option. 
+        //             Timer displays NaaN error in HTML.  
+        // } else if (session == "select"){
+        //     timeLeftInSession = 0; 
+        //     startSession = false; 
+        //     pauseSession = false; 
+        //     stopSession = false; 
+        // }
+    // } //end of outer IF-ELSE
+
+} //end of f(x) 
 
 
 
@@ -172,32 +186,49 @@ function showTimerCountdown(timeLeftInSession) {
             stopSession = false; 
             clearInterval(result); 
             showTimer(timeLeftInSession);
+            let timestamp = new Date(); 
 
+            // Display session log in browser
 
-
+            // For testing: 
             // $.post('/save_session', {'date':'DATE'}, (res) => {
             //     console.log(res); 
             // }); 
 
-            // Create object to use in jquery POST request to server.py 
-            let session_to_send = {
-                'project_id': 2, // to do: replace w/actual project id; use jQuery to get it back out of JINJA 
-                'session_type': session, 
-                'session_length': 25, 
-                'session_date': new Date(), 
-                'session_time': "12:45 PM"
-            }
+
+            let hiddenProjectID = document.getElementById("hidden-project-id").innerText; 
             
+            // Create a JS object to send to server to be saved in SQL. 
+            let session_to_send = {
+                'project_id': hiddenProjectID, 
+                'session_type': session, 
+                'session_length': sessionDuration, 
+                'session_date_for_parsing': new Date(), 
+                'session_timestamp': timestamp
+            }
+
             // res (response) comes from the server ; not input param! 
             $.post('/save_session', session_to_send, (response) => {
-                let strObj = JSON.parse(response); 
-                console.log(strObj); 
-                // console.log(strObj[0]); 
-                // console.log(strObj[1]); 
-                console.log(strObj["session_type"]);
-                console.log(strObj["session_time"]);
+                let sessionObject = JSON.parse(response); 
+                let sessionLog = document.getElementById('session_log'); 
+                // $('#session_log').append(`<p>Completed session: ${sessionObject['session_type']} ${sessionObject['session_timestamp']}</p>`)
+                $('#session_log').prepend(`<li>${sessionObject['session_type']} ${sessionObject['session_length']} ${sessionObject['session_timestamp']}</li>`)
+                
+                // displayCompletedSessionDetails(sessionObject)
 
-                // Display session log in browser
+                // displayCompletedSessionType 
+                // displayCompletedSessionDate
+                // displayCompletedSessionDuration 
+
+                // To-Do: 
+                // Parse sessionObject for time (make it human-readable). 
+
+                // For debugging: 
+                // console.log(sessionObject); 
+                // console.log(sessionObject[0]); 
+                // console.log(sessionObject[1]); 
+                // console.log(sessionObject["session_type"]);
+                // console.log(sessionObject["session_timestamp"]);     
 
             }); 
         } 
@@ -205,7 +236,27 @@ function showTimerCountdown(timeLeftInSession) {
 } // end of f(x)
 
 
+// function displayCompletedSessionDetails(sessionObject) {
+//     // body...
 
+
+//                 displayCompletedSessionType 
+//                 displayCompletedSessionDate
+//                 displayCompletedSessionDuration
+
+//                     session_python_dict = {"session_type": s_type, 
+//                            "session_length": s_len, 
+//                            "session_date_for_parsing": s_date, 
+//                            "session_timestamp": s_time}
+
+// }
+
+
+// function displayCompletedSessionType(sessionObject){
+//     // Display session type in browser. 
+//     if (sessionObject.session_type == 
+
+// }
 
 function convert_timeLeftInSession(timeLeftInSession) {
     // console.log('convert_timeLeftInSession', timeLeftInSession); 
@@ -301,6 +352,8 @@ function getDateInfo() {
 
     return dateVars; 
 }
+
+
 
 
 // Test: It works! 

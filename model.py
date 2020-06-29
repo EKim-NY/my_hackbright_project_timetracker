@@ -61,8 +61,7 @@ class Project(db.Model):
     # Check w/Kat if this field is ok
     # AttributeError: SQLAlchemy obj. has no 'Datetime' attribute
     # Further research needed; DateTime was used in one of the labs/HWs? 
-    project_start = db.Column(db.String)
-    project_end = db.Column(db.String) 
+
 
 
     def __repr__(self): 
@@ -83,7 +82,7 @@ class Pomodoro(db.Model):
     pomodoro_date = db.Column(db.String)
     project = db.relationship('Project')
     # Need to add these fields to sample_pomodoros.json 
-    pomodoro_start = db.Column(db.String)
+    pomodoro_timestamp = db.Column(db.String)
 
 
 

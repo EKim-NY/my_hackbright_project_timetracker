@@ -164,19 +164,24 @@ def save_session():
 
     # request.form.get gets session info from JS
     print('*******')
-    s_id = request.form.get('session_id') 
+    project_id = request.form.get('project_id') 
     s_type = request.form.get('session_type') 
     s_len = request.form.get('session_length') 
-    s_date = request.form.get('session_date') 
-    s_time = request.form.get('session_time') 
-    crud.create_pomodoro(s_id, s_type, s_len, "NOTES", s_date, s_time)
+    s_date = request.form.get('session_date_for_parsing') 
+    s_time = request.form.get('session_timestamp') 
+    crud.create_pomodoro(project_id, s_type, s_len, "Session Log", s_date, s_time)
     print('*******')
 
-    # return s_type, s_time (filter by user_id, project_id, session_date(today))
-    python_dict = {"session_type": s_type, "session_time": s_time}
+    # Create a Python dictionary in the server to hold info to be rendered in the browser.
+    # Convert it to a JSON string before sending it to the client (aka browser) for rendering in HTML
+    # Timer.js will convert the JSON string to a JavaScript object before displaying it in the browser.
+    session_python_dict = {"session_type": s_type, 
+                           "session_length": s_len, 
+                           "session_date_for_parsing": s_date, 
+                           "session_timestamp": s_time}
             
    
-    return json.dumps(python_dict)
+    return json.dumps(session_python_dict)
     # return json.dumps([s_type, s_time]) 
     # response from server 
 

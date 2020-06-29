@@ -60,7 +60,7 @@ for project in project_data:
                                        project['project_rate'] 
                                       )
 
-    project_record = crud.create_project(u_id, p_name, p_type, p_notes, p_rate)
+    project_record = crud.create_project(u_id, p_name, p_type, p_rate, p_notes)
 
     projects_in_db.append(project_record)
 
@@ -78,18 +78,17 @@ for pomo in pomo_data:
     # pomo_type and the rest of the line into two separate lines? 
     # I couldn't get my multiline f-string earlier to work either. 
     # I'm getting a "pomodoro_type" is not defined error although this file ran w/o issues earlier. 
-    proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end = (pomo['project_id'],
+    proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_timestamp = (pomo['project_id'],
                                                                            pomo['pomodoro_type'],
                                                                            pomo['pomodoro_length'],
                                                                            pomo['pomodoro_notes'], 
                                                                            pomo['pomodoro_date'], 
-                                                                           pomo['start_time'],
-                                                                           pomo['end_time']
+                                                                           pomo['pomodoro_timestamp']
                                                                           )
 
     # import pdb; pdb.set_trace()
 
-    pomo_record = crud.create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start, pomo_end)
+    pomo_record = crud.create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_timestamp)
 
     # Debugging 
     # print("pomo_record:", pomo_record)

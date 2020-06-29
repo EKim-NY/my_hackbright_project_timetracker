@@ -3,37 +3,37 @@
 {% block title %} SESSION {% endblock %}
 
 {% block body %}
+{# Hidden HTML element allows the server to extract project.project_id from the DOM #}
+<p id="hidden-project-id" hidden> {{ project.project_id }} </p>
+
 <h1>{{ project.project_name }}</h1> 
   <!-- CONTAINER FOR ENTIRE CONTENT --> 
     <div class="container" id="session_container"> 
-
+      <h3>New Pomodoro Session</h3>
       <!-- FORM --> 
       <form class="forms" id="session_form">
-        <label>Select session details.</label>
           <br><br>
-        <label>Session interval: Custom</label>
-        <input type="checkbox" id="Custom">
-          <br><br>
-        <label>Session type:</label>
+        <label>Session Type:</label>
         <select id="session_type">
+          {# TO-DO: Add this back to DOM. Check for bugs.  #}
+          {# <option value="select">SELECT</option> #}
           <option value="work">Work</option>
           <option value="short_break">Short Break</option>
           <option value="long_break">Long Break</option>
         </select><br><br>
-        <input type="submit" value="Submit">
       </form><br><br>
       <!-- END OF FORM -->
 
       <!-- DISPLAY TIMER --> 
-      <div class="time">
+      <div class="time_container">
         <div class="time_stuff" id="todayDate">DATE</div>
         <div class="time_stuff" id="clockTime">CLOCK</div> 
-        <div class="time_stuff" id="timerTime">TIMER</div> 
+        <div class="time_stuff" id="timerTime">TIMER COUNTDOWN</div> 
       </div>
 
       <!-- PLAY, PAUSE, RESUME, STOP BUTTONS -->
-      <div class="icons">
-        <span class="action_icons">
+      <div class="icons-container">
+        <span class="action-icons">
           <button id="pomodoro-play">
               <i class="fas fa-play" id="play-icon"></i>
           </button>
@@ -46,9 +46,11 @@
         </span>
       </div><br><br> <!--ICONS-->
 
-      <div class="session_log">
+      <div class="session-container">
         <h3>Session History</h3>
-    <!-- Display session blocks representing chunks of time and session types in different colors along with centered text-->
+        <ul id="session_log"></ul>
+
+    <!-- Future To-Do Task: Display session blocks representing chunks of time and session types in different colors along with centered text-->
 
       </div> <!-- session_log --> 
     </div> <!-- session_container -->
