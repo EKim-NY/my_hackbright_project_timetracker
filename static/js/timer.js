@@ -216,9 +216,6 @@ function showTimerCountdown(timeLeftInSession) {
                 
                 // displayCompletedSessionDetails(sessionObject)
 
-                // displayCompletedSessionType 
-                // displayCompletedSessionDate
-                // displayCompletedSessionDuration 
 
                 // To-Do: 
                 // Parse sessionObject for time (make it human-readable). 
