@@ -17,6 +17,7 @@
     list-style-image: url("/static/img/tomato_clipart.jpg");
 }
 */
+
 body {
     background-color: #fbfbfb; /* rgb(251, 251, 251) */ 
     /*background-image: url("/static/img/amy-tran_pink-painted-wall.jpg"); */
@@ -31,36 +32,30 @@ body {
 
           
 
-.container-fluid.body-of-page {
-    border: 2px solid black; 
-    background-color: purple; 
+.container-fluid.body-of-page { 
+    background-color: white; 
 }
 
 
-#login-form {
-    border: 5px 5px 5px 5px solid red; 
+.container-fluid.form-container {
+    border:10px solid #b32424; 
     background-color: pink; 
 }
 
-#email-box {
-    padding: auto auto auto auto;
-    border: 3px solid red; 
-}
-
-#password-box {
-
-
+.login-field {
+    color: #b32424; 
+    
 }
 
 input[type="text" i] {
     padding-left: 30px; 
+
 }
 
-/*#submit-btn {
-    padding-left: 30px; 
-    padding-right: 30px; 
-    border-color: 5px solid red; 
-    background-color:pink; 
-    margin-top: 15px; 
-    margin-bottom: 15px; 
-}*/
+.submit-btn {
+    border-style: 3px solid red;
+    background-color: #b32424; 
+    font-weight: bold;
+    color: white;
+    /*color: #ea6564;*/
+}

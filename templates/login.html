@@ -11,28 +11,52 @@
       </div>
   </div>
 
-  <div class="form-container" id="login-form">
+  <div class="container-fluid form-container">
     <br>
-    <div class="row justify-content-left">
-      <form class="login-box" action="/login" method="post">
-        <label>Email:</label>
-        <input type="text" name="email" placeholder="Enter your email">
-      </form>
-    </div>
+      <div class="row justify-content-center"> <!-- Row1 -->
+        {# Two divs inside a row. Div 1 holds 2 rows of text. Div 2 holds 2 rows of text input types.  #}
 
-    <div class="row justify-content-left">
-      <form class="login-box" action="/login" method="post">
-        <label>Password:</label>
-        <input type="text" name="password" placeholder="Enter your password">
-      </form>
-    </div>
+        {# Div 1 #}
+        <div class="col-2"> 
+          <div class="row justify-content-center">
+            <label>Email:</label>
+          </div>
 
 
+          <div class="row justify-content-center">
+            <label>Password:<label>
+          </div>
+        </div> <!-- Div 1 --> 
 
+        {# Div2 #}
+        <div class="col-6">
+          <div class="row justify-content-left">
+            <form action="/login" method="post">
+              <input class="login-field" type="text" name="email" placeholder="Enter your email here">
+            </form>
 
+            <div class="row">
+              <br><br>
+            </div>
+
+            <form action="/login" method="post">
+              <input class="login-field" type="text" name="password" placeholder="Enter your password">
+            </form>
+          </div>
+        </div> <!-- Div 2--> 
+
+      </div> <!-- Row1 -->
+
+      <br> 
+
+    <!-- Row 2 -->
+    <div class="row justify-content-center">
       <form class="row justify-content-center" action="/login" method="post">
-        <button type="button" class="submit-btn">Login</button>
+        <button type="button" class="submit-btn">LOGIN</button>
       </form>
+    </div> <!-- Row2  -->
+
+    <br>
 
   </div> <!--form-container-->
 
