@@ -2,40 +2,48 @@
 <html>
 
   <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/style.css">
+    {# <link rel="stylesheet" href="/static/css/demo.css"> #}
 
     <title>
       {% block title %}{% endblock %}
     </title>
 
-    {% block head %}
-      <h1>My Lil' Pomodoro</h1> 
-      <img src="/static/tomato_clipart.jpg">
-    {% endblock %}
-
+    {% block head %}{% endblock %}
   </head>
 
   <body>
-
     {% for msg in get_flashed_messages() %}
       {{msg}}
     {% endfor %}
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-1">
+      
+    <div class="container-fluid top-of-page">
+      <div class="row justify-content-center"> 
+        <div class="col-4">  
+          <h1 align="center">MY LIL' TOMATO</h1> 
+        </div> <!--col-->
+      </div> <!--row-->
+    </div> <!--container-fluid top-of-page-->
+      
+    <div class="container-fluid body-of-page">
+      <div class="row justify-content-center"> 
+        <div class="col-4">
           {% block body %} {% endblock %}
-        </div> <!--"col-4"-->
-      </div> <!--"row"-->
-    </div> <!-- "container-fluid"-->
-
-
-    <span class="footer_container">FOOTER</span>
+        </div>
+      </div>
+    </div> <!--container-fluid entire-page-->
+{#     <span class="nav-bar">
+      <nav>
+        <a href="/about/">ABOUT</a>
+        <a href="/project/">PROJECTS</a>
+        <a href="/session/">SESSIONS</a>
+      </nav>
+    </span> #}
       {# Place footer that stays fixed here (after endblock) #}
 
   {#   <script src="static/js/demo.js"></script> #}
@@ -64,6 +72,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
   </body>

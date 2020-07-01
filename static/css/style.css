@@ -1,0 +1,63 @@
+/* BASE.HTML */ 
+/*bg-color: #f8e8e8; */
+/*pink */
+
+/*Center static tomato img on each page. */
+/*.tomato-image {
+    margin: auto auto auto auto;
+}
+
+.container-fluid.img-holder {
+    border-
+}
+
+
+/*li {
+    list-style-position: outside; 
+    list-style-image: url("/static/img/tomato_clipart.jpg");
+}
+*/
+body {
+    background-color: #fbfbfb; /* rgb(251, 251, 251) */ 
+    /*background-image: url("/static/img/amy-tran_pink-painted-wall.jpg"); */
+
+}
+
+/*.nav-bar {
+    display: inline-block; 
+    background-color: pink; 
+    font-style: black;
+}*/
+
+          
+
+.container-fluid.body-of-page {
+    border: 10px solid red; 
+    background-color: pink; 
+}
+
+
+#login-form {
+    border: 5px solid red; 
+    background-color: white; 
+}
+
+#email-box {
+    padding: auto 2px auto 2px;
+
+
+}
+
+#password-box {
+
+
+}
+
+#submit-btn {
+    padding-left: 30px; 
+    padding-right: 30px; 
+    border-color: 5px solid red; 
+    background-color:pink; 
+    margin-top: 15px; 
+    margin-bottom: 15px; 
+}

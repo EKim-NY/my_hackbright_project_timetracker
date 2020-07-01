@@ -43,6 +43,13 @@ def handle_homepage():
         return redirect('/login')
 
 
+@app.route('/about', methods=['GET'])
+def about(): 
+    """View About page."""
+
+    return render_template('about.html')
+
+
 
 @app.route('/login', methods=['GET'])
 def login():
