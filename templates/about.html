@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{# PAGE UNDER CONSTRUCTION #}
 {% block title %}
  MY LIL' TOMATO - about
 {% endblock %}
@@ -27,6 +28,12 @@
   <div class="row justify-content-center">
     <h5 align="center">If you said to any of the above, this app was made for you!</h5>
   </div> <!--row--> 
+
+  <form action='/about' method="POST">
+    <div class="row justify-content-center">
+      <input type="submit" class="submit-btn" name="LOGIN" value="LOGIN">
+    </div>
+  </form>
 
   <div class="row justify-content-center">
     <p>Try it out and let us know how it went.<p>

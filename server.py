@@ -14,6 +14,14 @@ import json
 # Make jinja2 throw errors for undefined vars
 from jinja2 import StrictUndefined 
 
+# from flask_wtf import FlaskForm
+# from wtforms import SubmitField 
+
+# class SubmitButton(FlaskForm): 
+#     login = SubmitField("LOGIN")
+
+
+
 app = Flask(__name__)
 
 # Flask instance needs a secret key or flash, session won't work 
@@ -22,6 +30,23 @@ app.jinja_env.undefined = StrictUndefined
 
 
 ############## ROUTES AND VIEW FUNCTIONS ####################### 
+
+@app.route('/about', methods=['GET'])
+def about(): 
+    """View About page."""
+
+    return render_template('about.html')
+
+
+@app.route('/about', methods=['POST'])
+def handle_about(): 
+    """Redirect user to login page when LOGIN button is clicked."""
+
+   # How can I handle the submit type button when no values are attached to it? 
+   # Check Flask tutorials online. 
+
+    return redirect('/')
+
 
 @app.route('/', methods=['GET'])
 def show_homepage(): 
@@ -41,13 +66,6 @@ def handle_homepage():
         return redirect('/new_account')
     elif result == 'existing_user': 
         return redirect('/login')
-
-
-@app.route('/about', methods=['GET'])
-def about(): 
-    """View About page."""
-
-    return render_template('about.html')
 
 
 
@@ -112,6 +130,7 @@ def view_projects():
 
 @app.route('/projects', methods=['POST'])
 def show_existing_projects(): 
+    """User can select an existing project."""
 
     if session.get('user_id'):  
 
@@ -120,7 +139,7 @@ def show_existing_projects():
         if dropdown == 'search_existing_project': 
             # return redirect('/view_project_sessions') // Page doesn't exist yet! 
             # return redirect('/project_sessions') 
-            return redirect('/session_pg/<project_name>')
+            return redirect('/session_pg<project_id>')
         elif dropdown == 'create_new_project': 
             return redirect('/new_project')
 
@@ -129,9 +148,14 @@ def show_existing_projects():
         return redirect('/login')
 
 
+@app.route('/new_project', methods=['GET'])
+def new_project():
+    """View 'Create a New Project' page."""
+
+    return render_template('new_project.html')
 
 
-@app.route('/new_project', methods=['GET','POST'])
+@app.route('/new_project', methods=['POST'])
 def create_new_project(): 
     """Create new project for user."""
 
@@ -144,12 +168,14 @@ def create_new_project():
 
             new_project_obj = crud.create_project(session.get('user_id'), np_name, np_type, np_rate, np_notes)
             # return redirect(f'/session_pg/{new_project_obj.project_id}')
-            return redirect('/session_pg/<project_name>')
+
+            return redirect('/session_pg<project_id>')
+            flash('New project created')
 
         else: 
             return render_template('new_project.html')
     else: 
-        flash('Please create new account to create a new project or login to see existing projects.')
+        flash('Please create new account or log in first')
         return redirect('/login') 
 
 
@@ -158,6 +184,7 @@ def create_new_project():
 def session_pg(project_id): 
     """Allow user to select a new or existing Pomodoro session."""
 
+    # Problem w/this f(x); <project_id> keeps getting sent to db instead of project_id (int type)
     project = crud.get_project_by_project_id(project_id)  
 
     return render_template('session.html', project = project)
@@ -195,14 +222,14 @@ def save_session():
 # create_pomodoro(proj_id, pomo_type, pomo_length, pomo_notes, pomo_date, pomo_start): 
 
 
-@app.route('/project_sessions')
-def show_project_sessions(): 
-    """Show all sessions for selected project."""
+# @app.route('/project_sessions')
+# def show_project_sessions(): 
+#     """Show all sessions for selected project."""
 
-    if session.get('user_id'): 
-        # project_name = crud.
+#     if session.get('user_id'): 
+#         # project_name = crud.
 
-        return render_template('project_sessions.html')
+#         return render_template('project_sessions.html')
 
 
 

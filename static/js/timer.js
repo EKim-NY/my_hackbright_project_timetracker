@@ -1,6 +1,6 @@
 "use strict"; 
 
-alert('timer.js has loaded'); 
+// alert('timer.js has loaded'); 
 
 
 // Note: 

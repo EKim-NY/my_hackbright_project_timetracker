@@ -3,61 +3,57 @@
 {% block title %}PROJECTS{% endblock %}
 
 {% block body %}
-  {# PROJECT CONTAINER #}
-  <div class="container-fluid" id="project_container"> 
 
-    {# FORM #}
-    <form class="forms" name="project_form" action='/projects' method="post">
+  <div class="row justify-content-center">
+      <div style="width:50%;height:0;padding-bottom:20%;position:relative;">
+        <iframe src="https://giphy.com/embed/WSxVrga7NqKlkmC13M" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+      </div>
+  </div>
+
+{# FORM #}
+  <form class="forms" name="project_form" action='/projects' method="POST">
+    {# PROJECT CONTAINER #}
+    <div class="container-fluid" id="project_container"> 
       <div class="row justify-content-center">
         <label class="label-name" id="select-project-id">SELECT PROJECT</label>
       </div>
         {# Dropdown #}
-
         <div class="row justify-content-center">
           <select class="input-box" name="project_dropdown_box" id="project_type">
-            <option class="project_dropdown" value="search_existing_project"> Existing Project </option>
-            <option class="project_dropdown" value="create_new_project"> New Project </option>
+            <option class="input-box" value="search_existing_project"> Existing Project </option>
+            <option class="input-box" value="create_new_project"> New Project </option>
           </select>
         </div>
         {# Dropdown #}
-
       <div class="row justify-content-center" id="select-project">
         <input type="submit" class="submit-btn" value="Submit">
+        {# <a href="/session_pg{{project.project_id}}"> #}
       </div>
-    </div>
-    </form><br>
-    {# FORM #}
 
     {# PROJECTS LOG #}
-    <div class="forms">
-      <div class="row justify-content-center">
-        <label class="heading-name">Project History</label>
-      </div>
+    <div class="row justify-content-center">
+      <label class="heading-name">Project History</label>
+    </div>
 
-      <div class="row justify-content-center">
-      {# for loop shows up empty if no items are in it; we want this result in HTML  #}
-        {% for project in projects %}
+    {# Display project details obtained from the database. #}
+    {# for loop shows up empty if no items are in it; we want this result in HTML  #}
+    <div class="row justify-content-center">
+      {% for project in projects %}
         <div class="projects" id="{{project.project_id}}">
           <h4>Project: {{ project.project_name }}</h4>
-          {# <a href="/session_pg/{{ project.project_id }}">Link</a> #}
           <a class="link" href="/session_pg{{project.project_id}}">Link</a>
-          {# <div class="row justify-content-center"> #}
             <div>
               <p class="plain-text">Hourly Rate: {{ project.project_rate }}</p>
             </div>
             <div>
               <p class="plain-text">Note: {{ project.project_notes }}</p>
             </div>
-          {# </div> #}
-
         {# Show dates of creation and last worked-on for project #}
-      </div>
-
-      </div>
+        </div> 
       {% endfor %}
     </div>
     {# PROJECTS LOG #}
+    </div>  <!-- project-container -->
+  </form>
 
-  </div> 
-  {# PROJECT CONTAINER #}
 {% endblock %}

@@ -58,9 +58,6 @@ class Project(db.Model):
     project_rate = db.Column(db.Float, unique=False,)
     user = db.relationship('User')
     pomodoros = db.relationship('Pomodoro')
-    # Check w/Kat if this field is ok
-    # AttributeError: SQLAlchemy obj. has no 'Datetime' attribute
-    # Further research needed; DateTime was used in one of the labs/HWs? 
 
 
 

@@ -70,7 +70,7 @@ def get_user_by_user_id(user_id):
     
 
 
-def get_project_by_user_id(user_id, project_name): 
+def get_project_by_user_id(user_id): 
     """SQL query should return selected project for user_id."""
 
     return Project.query.filter_by(user_id = user_id).first()
