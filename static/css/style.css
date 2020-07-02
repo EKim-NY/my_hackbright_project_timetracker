@@ -82,3 +82,55 @@ input[type="text" i] {
 .name {
     color:red;
 }
+
+.label-name {
+    color: #b32424;
+    font-weight: bold; 
+}
+
+.forms {
+    border: 5px solid #b32424;
+    background-color: pink;  
+}
+
+.row {
+    margin-top: 0px;
+    margin-bottom: 20px; 
+}
+
+.heading-name {
+    color: #b32424; 
+    font-weight: bold;
+    font-size: 2rem; 
+}
+
+#project-type {
+    border: 5px solid #b32424;
+    color: #b32424;
+}
+
+.link {
+    color: #b32424;
+    font-weight: bold;
+}
+
+.plain-text {
+    color: #734c2e; 
+    font-weight: bold; 
+    margin-top: 1px; 
+    margin-bottom: 1px; 
+}
+
+#select-project-id {
+    font-size: 1.5rem;
+}
+
+.input-box {
+    border: 3px solid #734c2e;  
+    background-color: white; 
+}
+
+#select-project {
+    margin-top:0px;
+    margin-bottom: 0px;
+}

@@ -4,34 +4,54 @@
 
 {% block body %}
   {# PROJECT CONTAINER #}
-  <div class="container" id="project_container"> 
+  <div class="container-fluid" id="project_container"> 
 
     {# FORM #}
     <form class="forms" name="project_form" action='/projects' method="post">
-      <label>Select Project</label><br><br>
+      <div class="row justify-content-center">
+        <label class="label-name" id="select-project-id">SELECT PROJECT</label>
+      </div>
         {# Dropdown #}
-        <select class="project_dropdown" name="project_dropdown_box" id="project_type">
-          <option class="project_option" value="search_existing_project"> Existing Project </option>
-          <option class="project_option" value="create_new_project"> New Project </option>
-        </select><br><br> 
+
+        <div class="row justify-content-center">
+          <select class="input-box" name="project_dropdown_box" id="project_type">
+            <option class="project_dropdown" value="search_existing_project"> Existing Project </option>
+            <option class="project_dropdown" value="create_new_project"> New Project </option>
+          </select>
+        </div>
         {# Dropdown #}
-      <input type="submit" value="Submit">
-    </form><br><br>
+
+      <div class="row justify-content-center" id="select-project">
+        <input type="submit" class="submit-btn" value="Submit">
+      </div>
+    </div>
+    </form><br>
     {# FORM #}
 
     {# PROJECTS LOG #}
-    <div class="projects_log">
-      <label>Project History</label>
+    <div class="forms">
+      <div class="row justify-content-center">
+        <label class="heading-name">Project History</label>
+      </div>
+
+      <div class="row justify-content-center">
       {# for loop shows up empty if no items are in it; we want this result in HTML  #}
-      {% for project in projects %}
-      <div class="projects" id="{{project.project_id}}">
-        <h3>{{ project.project_name }}</h3>
-        {# <a href="/session_pg/{{ project.project_id }}">Link</a> #}
-        <a href="/session_pg{{project.project_id}}">Link</a>
-        <p>{{ project.project_rate }}</p>
-        <p>{{ project.project_notes }}</p>
+        {% for project in projects %}
+        <div class="projects" id="{{project.project_id}}">
+          <h4>Project: {{ project.project_name }}</h4>
+          {# <a href="/session_pg/{{ project.project_id }}">Link</a> #}
+          <a class="link" href="/session_pg{{project.project_id}}">Link</a>
+          {# <div class="row justify-content-center"> #}
+            <div>
+              <p class="plain-text">Hourly Rate: {{ project.project_rate }}</p>
+            </div>
+            <div>
+              <p class="plain-text">Note: {{ project.project_notes }}</p>
+            </div>
+          {# </div> #}
 
         {# Show dates of creation and last worked-on for project #}
+      </div>
 
       </div>
       {% endfor %}

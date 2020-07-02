@@ -8,11 +8,10 @@
 
 <h1>{{ project.project_name }}</h1> 
   <!-- CONTAINER FOR ENTIRE CONTENT --> 
+{#   <form action="/login" method="POST" class="login-input-box"> #}
     <div class="container-fluid form-container" id="session_container"> 
-      <h3 class="name">New Pomodoro Session</h3>
+      <h3 class="heading-name">Create a new Pomodoro Session!</h3>
       <!-- FORM --> 
-      <form class="forms" id="session_form">
-          <br><br>
         <label>Session Type:</label>
         <select id="session_type">
           {# TO-DO: Add this back to DOM. Check for bugs.  #}
@@ -21,7 +20,7 @@
           <option value="short_break" class="name">Short Break</option>
           <option value="long_break" class="name">Long Break</option>
         </select><br><br>
-      </form><br><br>
+ {#  </form> #} 
       <!-- END OF FORM -->
 
       <!-- DISPLAY TIMER --> 
