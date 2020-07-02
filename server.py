@@ -139,7 +139,7 @@ def show_existing_projects():
         if dropdown == 'search_existing_project': 
             # return redirect('/view_project_sessions') // Page doesn't exist yet! 
             # return redirect('/project_sessions') 
-            return redirect('/session_pg<project_id>')
+            return redirect(f'/session_pg{project_id}')
         elif dropdown == 'create_new_project': 
             return redirect('/new_project')
 
@@ -169,7 +169,7 @@ def create_new_project():
             new_project_obj = crud.create_project(session.get('user_id'), np_name, np_type, np_rate, np_notes)
             # return redirect(f'/session_pg/{new_project_obj.project_id}')
 
-            return redirect('/session_pg<project_id>')
+            return redirect(f'/session_pg{new_project_obj.project_id}')
             flash('New project created')
 
         else: 

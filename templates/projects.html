@@ -37,9 +37,10 @@
 
     {# Display project details obtained from the database. #}
     {# for loop shows up empty if no items are in it; we want this result in HTML  #}
-    <div class="row justify-content-center">
+    
       {% for project in projects %}
-        <div class="projects" id="{{project.project_id}}">
+      <div class="row justify-content-center">
+        <div class="projects col-8 offset-1" id="{{project.project_id}}">
           <h4>Project: {{ project.project_name }}</h4>
           <a class="link" href="/session_pg{{project.project_id}}">Link</a>
             <div>
@@ -50,8 +51,9 @@
             </div>
         {# Show dates of creation and last worked-on for project #}
         </div> 
+      </div>
       {% endfor %}
-    </div>
+
     {# PROJECTS LOG #}
     </div>  <!-- project-container -->
   </form>
