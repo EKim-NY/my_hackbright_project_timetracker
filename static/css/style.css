@@ -30,6 +30,11 @@ body {
     font-style: black;
 }*/
 
+.app-name {
+    color: #b32424; 
+    font-weight: bold; 
+    font-size: 3.5rem; 
+}
           
 
 .container-fluid.body-of-page { 
@@ -42,9 +47,15 @@ body {
     background-color: pink; 
 }
 
-.login-field {
-    color: #b32424; 
-    
+/*LOGIN FORM FIELDS */
+#row-1 {
+    margin-top: 30px;
+    margin-bottom: 0px; 
+}
+
+#row-2 {
+    margin-top: 5px; 
+    margin-bottom: 10px; 
 }
 
 input[type="text" i] {
@@ -52,10 +63,22 @@ input[type="text" i] {
 
 }
 
+.login-input-box {
+    border: 3px solid red; 
+    background-color: pink; 
+}
+
+
 .submit-btn {
     border-style: 3px solid red;
     background-color: #b32424; 
     font-weight: bold;
     color: white;
+    margin-top: 10px;
+    margin-bottom: 20px;
     /*color: #ea6564;*/
+}
+
+.name {
+    color:red;
 }

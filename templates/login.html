@@ -4,61 +4,56 @@
 
 {% block body %}
 
-
+  {# PLACE IMG HERE #}
   <div class="row justify-content-center">
       <div style="width:80%;height:0;padding-bottom:50%;position:relative;">
         <iframe src="https://giphy.com/embed/WSxVrga7NqKlkmC13M" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
       </div>
   </div>
-
-  <div class="container-fluid form-container">
-    <br>
-      <div class="row justify-content-center"> <!-- Row1 -->
-        {# Two divs inside a row. Div 1 holds 2 rows of text. Div 2 holds 2 rows of text input types.  #}
-
-        {# Div 1 #}
+  {# PLACE FORM CONTAINER HERE #}
+  
+   <!-- FORM --> 
+   <form action="/login" method="POST" class="login-input-box">
+    <div class="container-fluid form-container">
+    <span class="row justify-content-center" id="row-1">
         <div class="col-2"> 
-          <div class="row justify-content-center">
+          <div class="row justify-content-left"> 
             <label>Email:</label>
           </div>
+        </div>
 
-
-          <div class="row justify-content-center">
-            <label>Password:<label>
-          </div>
-        </div> <!-- Div 1 --> 
-
-        {# Div2 #}
         <div class="col-6">
           <div class="row justify-content-left">
-            <form action="/login" method="post">
-              <input class="login-field" type="text" name="email" placeholder="Enter your email here">
-            </form>
-
-            <div class="row">
-              <br><br>
-            </div>
-
-            <form action="/login" method="post">
-              <input class="login-field" type="text" name="password" placeholder="Enter your password">
-            </form>
+            {# <form action="/login" method="POST" class="login-input-box"> #}
+              <input class="login-field" type="text" name="email" placeholder="Enter email here">
+            {# </form> #}
           </div>
-        </div> <!-- Div 2--> 
+        </div>
+    </span>    
 
-      </div> <!-- Row1 -->
+    <span class="row justify-content-center" id="row-2">
+        <div class="col-2"> 
+          <div class="row justify-content-left"> 
+            <label>Password:</label>
+          </div>
+        </div>
 
-      <br> 
+        <div class="col-6">
+          <div class="row justify-content-left">
+            {# <form action="/login" method="POST" class="login-input-box"> #}
+              <input class="login-field" type="text" name="password" placeholder="Enter password here">
+            {# </form> #}
+          </div>
+        </div>
+    </span>
 
-    <!-- Row 2 -->
-    <div class="row justify-content-center">
-      <form class="row justify-content-center" action="/login" method="post">
+    <span class="row justify-content-center" id="row-3">
+      <div class="row justify-content-center" action="/login" method="POST">
         <button type="button" class="submit-btn">LOGIN</button>
-      </form>
-    </div> <!-- Row2  -->
-
-    <br>
-
-  </div> <!--form-container-->
+      </div>
+    </span>
 
 
+  </div> <!-- form-container --> 
+  </form> <!-- FORM --> 
 {% endblock %}
