@@ -3,20 +3,19 @@
 {% block title %}NEW PROJECT{% endblock %}
 
 {% block body %}
-  <h1>CREATE NEW PROJECT:</h1>
   <!-- CONTAINER FOR ENTIRE CONTENT -->
   <div class="container" id="project_container"> 
 
     <form class="forms" id="new_project_form" action="/new_project" method="POST">
-      <label>Create New Project</label><br><br>
-      <input type="text" class="project" name="new_project_name">Project Name<br><br>
-      <input type="text" class="project" name="new_project_type">Project Type<br><br>
-      <input type="text" class="project" name="new_project_rate">Project Rate<br><br>
-      <input type="text" class="project" name="new_project_notes">Project Notes<br><br>
-      <input type="submit" value="Submit">
-    </form><br><br>
-
-
+      <p id="new-project-heading" style="text-align: center;">CREATE A NEW PROJECT</p>
+        <div style="text-align:center; margin:0 auto;">
+          <input type="text" class="label-name project-field" name="new_project_name" placeholder="Enter project name"><br>
+          <input type="text" class="label-name project-field" name="new_project_type" placeholder="Enter project type"><br>
+          <input type="text" class="label-name project-field" name="new_project_rate" placeholder="Enter project rate"><br>
+          <input type="text" class="label-name project-field" name="new_project_notes" placeholder="Enter project notes"><br>
+          <input class="submit-btn" type="submit" value="Submit">
+        </div>
+    </form><br>
   </div> <!-- session_container -->
-  
+
 {% endblock %}  

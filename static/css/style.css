@@ -134,3 +134,16 @@ input[type="text" i] {
     margin-top:0px;
     margin-bottom: 0px;
 }
+
+#new-project-heading {
+    color: #734c2e;  
+    font-size: 2rem; 
+    font-weight: bold;
+}
+
+.project-field {
+    margin-top: 5px; 
+    margin-bottom: 5px; 
+    border: 4px solid #734c2e; 
+    
+}
